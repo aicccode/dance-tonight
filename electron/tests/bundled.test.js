@@ -81,7 +81,8 @@ describe("seedBundledSongs", () => {
     const added = await seedBundledSongs({ store, music, assets: "assets", keyOf });
 
     assert.equal(added.length, BUNDLED_TRACKS.length);
-    assert.deepEqual(music.copies.map((c) => c.src), BUNDLED_TRACKS.map((t) => `assets/music/${t.file}`));
+    // basename, because join() emits backslashes on Windows
+    assert.deepEqual(music.copies.map((c) => c.src.split(/[\\/]/).pop()), BUNDLED_TRACKS.map((t) => t.file));
     assert.deepEqual(added.map((s) => s.title), BUNDLED_TRACKS.map((t) => t.title));
     assert.ok(added.every((s) => s.status === undefined && s.key && s.size > 0));
     assert.match(added[0].source, /built-in · .+ · CC BY 3\.0/);
