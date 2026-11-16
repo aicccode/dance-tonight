@@ -4,6 +4,10 @@ A fitness game set to music, and also a 3D dance-along training tool. Fitness mo
 
 Supports Windows, macOS, and Linux. Everything runs locally, no server needed, and your camera feed never leaves your computer.
 
+| ![Dance mode: following an imported motion-capture clip](screenshot-dance.png) | ![Today's workout: 100-day plan, body log and stats](screenshot-home.png) |
+|---|---|
+| Dance mode: following an imported motion-capture clip | Today's workout: 100-day plan, body log and stats |
+
 ## Features
 
 | Mode | Description |

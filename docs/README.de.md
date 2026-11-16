@@ -4,6 +4,10 @@ Ein Fitness-Spiel, bei dem man sich zur Musik bewegt, und zugleich ein 3D-Tanz-L
 
 Unterstützt Windows, macOS und Linux. Läuft komplett lokal, benötigt keinen Server – die Kamerabilder verlassen deinen Rechner nicht.
 
+| ![Tanzmodus: Eine importierte Motion-Capture-Sequenz nachtanzen](screenshot-dance.png) | ![Heutiges Training: 100-Tage-Plan, Körperdaten und Statistiken](screenshot-home.png) |
+|---|---|
+| Tanzmodus: Eine importierte Motion-Capture-Sequenz nachtanzen | Heutiges Training: 100-Tage-Plan, Körperdaten und Statistiken |
+
 ## Funktionen
 
 | Modus | Beschreibung |

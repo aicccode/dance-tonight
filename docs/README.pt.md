@@ -4,6 +4,10 @@ Um jogo fitness em que você se exercita no ritmo da música, e também uma ferr
 
 Suporta Windows, macOS e Linux. Tudo roda localmente, sem servidor — as imagens da câmera nunca saem do seu computador.
 
+| ![Modo de dança: seguindo um clipe de captura de movimento importado](screenshot-dance.png) | ![Treino de hoje: plano de 100 dias, registro corporal e estatísticas](screenshot-home.png) |
+|---|---|
+| Modo de dança: seguindo um clipe de captura de movimento importado | Treino de hoje: plano de 100 dias, registro corporal e estatísticas |
+
 ## Funcionalidades
 
 | Modo | Descrição |

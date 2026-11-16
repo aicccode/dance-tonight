@@ -4,6 +4,10 @@ Un jeu de fitness où l'on bouge en musique, mais aussi un outil d'apprentissage
 
 Compatible Windows, macOS et Linux. Tout fonctionne en local, sans serveur : les images de la caméra ne quittent jamais votre ordinateur.
 
+| ![Mode danse : apprendre avec un clip de capture de mouvement importé](screenshot-dance.png) | ![Entraînement du jour : plan de 100 jours, mesures corporelles et statistiques](screenshot-home.png) |
+|---|---|
+| Mode danse : apprendre avec un clip de capture de mouvement importé | Entraînement du jour : plan de 100 jours, mesures corporelles et statistiques |
+
 ## Fonctionnalités
 
 | Mode | Description |

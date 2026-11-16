@@ -4,6 +4,10 @@ Un juego de fitness al ritmo de la música y, a la vez, una herramienta de entre
 
 Compatible con Windows, macOS y Linux. Todo funciona en local, sin servidor, y la imagen de la cámara nunca sale de tu ordenador.
 
+| ![Modo de baile: siguiendo un clip de captura de movimiento importado](screenshot-dance.png) | ![Entrenamiento de hoy: plan de 100 días, registro corporal y estadísticas](screenshot-home.png) |
+|---|---|
+| Modo de baile: siguiendo un clip de captura de movimiento importado | Entrenamiento de hoy: plan de 100 días, registro corporal y estadísticas |
+
 ## Funciones
 
 | Modo | Descripción |
