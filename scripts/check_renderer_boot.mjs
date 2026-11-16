@@ -4,6 +4,13 @@ import { readdirSync, statSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { join } from "node:path";
 
+// Importing app.js also *runs* its boot path, and that path calls api.state() /
+// api.songs(). Without Electron every IPC call rejects, so the graph check would
+// die on an unhandled rejection — which it did, but only sometimes: locally
+// process.exit() won the race, on CI the rejection was reported first. The check
+// only cares about import-graph errors, so swallow boot-time rejections.
+process.on("unhandledRejection", () => {});
+
 const noop = () => {};
 const el = () => new Proxy({
   addEventListener: noop, classList: { toggle: noop, add: noop, remove: noop },
