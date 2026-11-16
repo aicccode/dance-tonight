@@ -9,19 +9,39 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to build and publish (e.g. v1.0.0)"
+        description: "Tag already pushed to GitHub (e.g. v1.0.0) — a tag that only exists locally cannot be fetched"
         required: true
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  # one release at a time per tag, whether it came from a tag push or a manual run
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
+  # checkout fails with a bare "git fetch ... exit code 1" when the ref is not on
+  # the remote, which is hard to read. Check first and say what is wrong.
+  preflight:
+    name: check tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: The tag must already be pushed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF: ${{ inputs.tag || github.ref_name }}
+        run: |
+          if gh api "repos/${{ github.repository }}/git/ref/tags/$REF" >/dev/null 2>&1; then
+            echo "tag $REF exists on the remote"
+          else
+            echo "::error::Remote has no tag $REF. Create and push it first: git tag -s $REF -m '$REF' && git push origin $REF"
+            exit 1
+          fi
+
   build:
     name: ${{ matrix.target }}
+    needs: preflight
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -43,7 +63,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      # postinstall copies node_modules into web/vendor and fetches the pose model
+      # postinstall copies node_modules and the pose model into web/vendor
       - name: Install
         run: npm ci
 
