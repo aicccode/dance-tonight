@@ -23,8 +23,8 @@ This product includes software and assets from third parties:
      downloaded from https://hub.vroid.com/
 
 4. MediaPipe pose_landmarker_lite.task (pose detection)
-   - NOT bundled; downloaded at install time from Google Storage by
-     scripts/vendor.mjs
+   - File: assets/models/pose_landmarker_lite.task (copied into web/vendor at
+     install time by scripts/vendor.mjs; nothing is downloaded)
    - License: Apache License 2.0
    - Source: https://developers.google.com/mediapipe
 

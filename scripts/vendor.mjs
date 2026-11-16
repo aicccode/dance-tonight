@@ -1,8 +1,7 @@
 // Copy browser libraries from node_modules into web/vendor (served via app://).
-// Run automatically after `npm install` (postinstall). The MediaPipe pose model
-// is downloaded once from Google Storage if missing (uses your proxy env).
-import { cpSync, existsSync, mkdirSync, rmSync, statSync } from "node:fs";
-import { execFileSync } from "node:child_process";
+// Run automatically after `npm install` (postinstall). Nothing is downloaded:
+// the MediaPipe pose model is committed under assets/models and only copied.
+import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -37,12 +36,8 @@ for (const [from, to] of copies) {
 }
 
 const model = out("models/pose_landmarker_lite.task");
-if (!existsSync(model) || statSync(model).size < 5_000_000) {
-  mkdirSync(dirname(model), { recursive: true });
-  console.log("downloading MediaPipe pose model…");
-  execFileSync("curl", ["-fL", "--retry", "5", "-C", "-", "-o", `${model}.part`,
-    "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task"], { stdio: "inherit" });
-  cpSync(`${model}.part`, model);
-  rmSync(`${model}.part`);
-}
+const modelSrc = join(root, "assets", "models", "pose_landmarker_lite.task");
+if (!existsSync(modelSrc)) throw new Error("missing assets/models/pose_landmarker_lite.task");
+mkdirSync(dirname(model), { recursive: true });
+cpSync(modelSrc, model);
 console.log("vendor ok");

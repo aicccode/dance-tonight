@@ -15,6 +15,7 @@ assets/dances/*
 !assets/models/
 assets/models/*
 !assets/models/beat_this_final0.int8.onnx
+!assets/models/pose_landmarker_lite.task
 !assets/tts/
 assets/tts/*
 # bundled offline cue packs: zh (CosyVoice) + nine languages (Edge neural)

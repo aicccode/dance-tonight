@@ -62,7 +62,7 @@ npm install      # dépendances via npmmirror (voir .npmrc), copie automatique d
 npm start
 ```
 
-Le premier `npm install` télécharge un modèle de pose d'environ 5,8 Mo depuis Google Storage. En cas d'échec, configurez un proxy puis relancez `node scripts/vendor.mjs`.
+`web/vendor/` est un dossier généré, non versionné : `scripts/vendor.mjs` le reconstruit après `npm install`, en copiant les bibliothèques navigateur depuis `node_modules` et le modèle de pose depuis `assets/models/`. Aucun téléchargement n'a lieu pendant l'installation.
 
 Le répertoire `assets/` contient les ressources intégrées, incluses lors du packaging. Le dépôt n'embarque que le **paquet de vérification minimal** (les ressources volumineuses/personnelles ne sont pas dans le dépôt) :
 
@@ -83,7 +83,7 @@ Le répertoire `assets/` contient les ressources intégrées, incluses lors du p
 
 ## Migration des données entre appareils
 
-L'application ne se connecte pas à Internet et ne demande aucune inscription ; toutes les données restent en local. Pour transférer les données vers un autre appareil, utilisez « Réglages → Exporter / importer le paquet de données » pour générer un fichier `.dtx` : sélection par élément (séances / poids / chorégraphies / mocap / morceaux / analyse rythmique / réglages), compression gzip, chiffrement SM9 (cryptographie nationale) — la clé de chiffrement est dérivée de « identifiant de compte + phrase secrète », sans passer par aucun serveur ; l'autre appareil déchiffre et importe avec le même compte + phrase secrète.
+L'application ne se connecte pas à Internet et ne demande aucune inscription ; toutes les données restent en local. Pour transférer les données vers un autre appareil, utilisez « Réglages → Données → Exporter le paquet de données » et générez un fichier `.dtx` : sélection par catégorie (séances / poids et tour de taille / mes chorégraphies / captures de mouvement importées / copies de morceaux / analyse rythmique / réglages), compression gzip, chiffrement SM9 (mode SM4). La clé est dérivée de la seule phrase secrète (8 caractères minimum) ; cette phrase n'est jamais écrite dans le fichier ni transmise. L'import est incrémental : le contenu est dédoublonné, l'existant est conservé et seuls les éléments manquants sont ajoutés. Les paquets exportés par d'anciennes versions avec « compte + phrase secrète » s'importent toujours.
 
 ## Licence open source
 
@@ -103,10 +103,9 @@ La version macOS n'est pas signée avec un certificat de développeur, seulement
 ## Première utilisation
 
 1. **Bibliothèque de morceaux → Ajouter tout un dossier** : sélectionnez votre répertoire musical, l'analyse rythmique démarre en arrière-plan. Les morceaux sont copiés dans le répertoire de données de l'application (un seul exemplaire pour un contenu identique) ; ensuite vous pouvez supprimer ou déplacer les fichiers originaux. Les morceaux importés auparavant verront leur copie complétée automatiquement au démarrage.
-2. Si ces morceaux étaient auparavant sur un serveur GPU, allez dans **Réglages → Importer le paquet d'analyse rythmique** et importez `beat_pack.json` ; les morceaux reconnus n'auront pas besoin d'être réanalysés.
-3. **Réglages → Importer les données de l'ancienne version** : importez `legacy.json`, qui contient les séances, le poids et la date de début du programme de la version serveur.
-4. Envie d'utiliser votre voix ? Dans **Réglages → Coach vocal**, importez des enregistrements nommés d'après le texte des répliques pour remplacer la voix de la langue actuelle, ou restaurez le pack intégré en un clic.
-5. Passez d'abord par **Entraînement aux mouvements** pour répéter chaque mouvement, puis revenez à l'accueil pour commencer la séance.
+2. Pour migrer depuis une version antérieure : **Réglages → Données** propose « Importer les anciennes données » (`legacy.json` : séances, poids, date de début du plan, doublons écartés) et « Importer le paquet d'analyse rythmique » (`beat_pack.json` : apparié par empreinte du contenu, ces morceaux ne sont pas réanalysés).
+3. Envie d'utiliser votre voix ? Dans **Réglages → Coach vocal**, importez des enregistrements nommés d'après le texte des répliques pour remplacer la voix de la langue actuelle, ou restaurez le pack intégré en un clic.
+4. Passez d'abord par **Entraînement aux mouvements** pour répéter chaque mouvement, puis revenez à l'accueil pour commencer la séance.
 
 Conseil de placement : à 2,5 à 3 mètres de la caméra, corps entier dans le cadre (chevilles comprises), lumière venant de face. Avant chaque morceau, tenez-vous droit, bras relâchés, environ 1 seconde pour terminer l'étalonnage.
 

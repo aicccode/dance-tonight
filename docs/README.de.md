@@ -62,7 +62,7 @@ npm install      # Abhängigkeiten über npmmirror (siehe .npmrc), nach der Inst
 npm start
 ```
 
-Beim ersten `npm install` wird ein ca. 5,8 MB großes Posenmodell von Google Storage geladen. Schlägt der Download fehl, nach dem Einrichten des Proxys einfach `node scripts/vendor.mjs` erneut ausführen.
+`web/vendor/` ist ein generiertes Verzeichnis und liegt nicht im Repository: Nach `npm install` baut `scripts/vendor.mjs` es neu auf und kopiert die Browser-Bibliotheken aus `node_modules` sowie das Posenmodell aus `assets/models/`. Beim Installieren wird nichts heruntergeladen.
 
 Im Verzeichnis `assets/` liegen die eingebauten Ressourcen, sie werden beim Packen mitgeliefert. Das Repository enthält nur das **Minimale-Verifizierungs-Paket** (große/private Ressourcen werden nicht eingecheckt):
 
@@ -83,7 +83,7 @@ Im Verzeichnis `assets/` liegen die eingebauten Ressourcen, sie werden beim Pack
 
 ## Datenmigration zwischen Geräten
 
-Die App geht nicht ins Netz und verlangt keine Registrierung, alle Daten liegen lokal. Um die Daten auf ein anderes Gerät zu übertragen, unter „Einstellungen → Datenpaket exportieren/importieren“ eine `.dtx`-Datei erzeugen: Auswahl pro Kategorie (Training / Gewicht / Choreografien / Motion-Capture / Songs / Beat-Analysen / Einstellungen), gzip-Komprimierung, SM9-Verschlüsselung (chinesischer Nationalkryptografie-Standard) – das Verschlüsselungspasswort wird aus „Konto-ID + Passwort“ abgeleitet und läuft über keinen Server; auf dem anderen Gerät genügen dasselbe Konto + Passwort zum Entschlüsseln und Importieren.
+Die App geht nicht ins Netz und verlangt keine Registrierung, alle Daten liegen lokal. Um die Daten auf ein anderes Gerät zu übertragen, unter „Einstellungen → Daten → Datenpaket exportieren“ eine `.dtx`-Datei erzeugen: Auswahl pro Kategorie (Training / Gewicht und Taille / eigene Choreografien / importierte Motion-Capture-Daten / Song-Kopien / Beat-Analysen / Einstellungen), gzip-Komprimierung, SM9-Verschlüsselung (SM4-Modus). Der Schlüssel wird allein aus der Passphrase abgeleitet (mindestens 8 Zeichen); die Passphrase steht nicht in der Datei und wird nirgendwohin gesendet. Der Import ist inkrementell: Inhalte werden entdoppelt, vorhandene Einträge bleiben, nur Fehlendes kommt hinzu. Pakete älterer Versionen mit „Konto + Passphrase“ lassen sich weiterhin importieren.
 
 ## Open-Source-Lizenz
 
@@ -103,10 +103,9 @@ Die macOS-Version ist nicht mit einem Entwicklerzertifikat signiert, sondern nur
 ## Erste Schritte
 
 1. **Songbibliothek → Gesamten Ordner hinzufügen**: Das Musikverzeichnis auswählen, die Beat-Analyse startet im Hintergrund. Die Musik wird eine Kopie ins Datenverzeichnis der App bekommen (bei identischem Inhalt nur eine Kopie), die Originaldateien können danach gelöscht oder verschoben werden. Zuvor importierte Songs werden beim Start automatisch nachkopiert.
-2. Lagen diese Songs vorher auf einem GPU-Server, unter **Einstellungen → Beat-Analyse-Paket importieren** die Datei `beat_pack.json` importieren – dann müssen bereits erfasste Songs nicht neu analysiert werden.
-3. **Einstellungen → Altdaten importieren**: `legacy.json` importieren, inklusive Trainingsaufzeichnungen, Gewicht und Planstartdatum der Serverversion.
-4. Eigene Stimme gewünscht? Unter **Einstellungen → Sprach-Coach** Aufnahmen hochladen, die nach dem Spruchtext benannt sind – sie ersetzen die Stimme der aktuellen Sprache; das mitgelieferte Paket lässt sich mit einem Klick wiederherstellen.
-5. Zuerst in der **Übungsschule** jede Bewegung einmal durchgehen, dann auf der Startseite das Training starten.
+2. Beim Umzug von einer älteren Version: Unter **Einstellungen → Daten** gibt es „Alte Daten importieren“ (`legacy.json`: Trainingseinheiten, Gewicht, Startdatum des Plans, Duplikate werden übersprungen) und „Beat-Analyse-Paket importieren“ (`beat_pack.json`: Abgleich über den Inhalts-Fingerabdruck, diese Songs werden nicht neu analysiert).
+3. Eigene Stimme gewünscht? Unter **Einstellungen → Sprach-Coach** Aufnahmen hochladen, die nach dem Spruchtext benannt sind – sie ersetzen die Stimme der aktuellen Sprache; das mitgelieferte Paket lässt sich mit einem Klick wiederherstellen.
+4. Zuerst in der **Übungsschule** jede Bewegung einmal durchgehen, dann auf der Startseite das Training starten.
 
 Positionierungstipp: 2,5–3 Meter von der Kamera entfernt stehen, ganzer Körper im Bild (einschließlich Knöchel), Licht von vorn. Vor jedem Song aufrecht stehen und mit natürlichen, herabhängenden Armen etwa 1 Sekunde lang die Kalibrierung abschließen.
 

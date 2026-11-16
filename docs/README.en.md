@@ -62,7 +62,7 @@ npm install      # dependencies come from npmmirror (see .npmrc); after install,
 npm start
 ```
 
-The first `npm install` downloads a ~5.8MB pose model from Google Storage. If the download fails, configure your proxy and rerun `node scripts/vendor.mjs`.
+`web/vendor/` is generated, not committed: `scripts/vendor.mjs` rebuilds it after `npm install`, copying the browser libraries from `node_modules` and the pose model from `assets/models/`. Nothing is downloaded during install.
 
 The `assets/` directory holds bundled resources and ships with the package. The repo bundles only the **minimal verification pack** (large/personal assets are not committed):
 
@@ -83,7 +83,7 @@ The `assets/` directory holds bundled resources and ships with the package. The 
 
 ## Cross-Device Data Migration
 
-The app never goes online and requires no account; all data is stored locally. To move data to another device, use "Settings → Export / Import Data Package" to generate a `.dtx` file: per-category selection (workouts / weight / choreographies / mocap / songs / beat analysis / settings), gzip compression, and SM9 encryption — the encryption key is derived from "account ID + passphrase", never touching any server; on the other device, decrypt and import with the same account + passphrase.
+The app never goes online and requires no account; all data stays local. To move data to another device, use "Settings → Data → Export Data Package" to create a `.dtx` file: per-category selection (workouts / weight and waist / my choreographies / imported motion capture / song copies / beat analysis / settings), gzip compression, SM9 encryption (SM4 mode). The key is derived from the passphrase alone (8 characters minimum); the passphrase is never written into the file and never leaves your machine. Import is incremental: content is de-duplicated, so existing records stay and only the missing ones are added. Packages exported by older versions with "account + passphrase" still import fine.
 
 ## License
 
@@ -103,10 +103,9 @@ The macOS build is not signed with a developer certificate, only ad-hoc signed. 
 ## First Use
 
 1. **Song Library → Add Entire Folder**: pick your music directory and beat analysis starts in the background. Music is copied into the app's data directory (identical content stored once), after which the originals can be deleted or moved. Songs imported previously are re-copied automatically at startup.
-2. If these songs previously lived on a GPU server, go to **Settings → Import Beat Analysis Pack** and import `beat_pack.json`; matched songs skip analysis.
-3. **Settings → Import Legacy Data**: import `legacy.json`, including training records, weight, and plan start date from the server version.
-4. Want your own voice? Under **Settings → Voice Coach**, upload recordings named after the cue texts to replace the current language's voice, or restore the bundled pack with one click.
-5. First go through every move in **Move Tutorial**, then start a workout from the home page.
+2. Migrating from an earlier version: **Settings → Data** offers "Import legacy data" (`legacy.json`: workouts, weight, plan start date, de-duplicated by time and score) and "Import beat analysis pack" (`beat_pack.json`: matched by content fingerprint, so those songs need no re-analysis).
+3. Want your own voice? Under **Settings → Voice Coach**, upload recordings named after the cue texts to replace the current language's voice, or restore the bundled pack with one click.
+4. First go through every move in **Move Tutorial**, then start a workout from the home page.
 
 Positioning tips: stand 2.5–3 meters from the camera with your whole body in frame (including ankles), lit from the front. Before each song, stand upright with arms relaxed at your sides for about 1 second to complete calibration.
 

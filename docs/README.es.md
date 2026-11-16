@@ -62,7 +62,7 @@ npm install      # las dependencias vienen de npmmirror (ver .npmrc); tras insta
 npm start
 ```
 
-El primer `npm install` descarga un modelo de pose de unos 5,8MB desde Google Storage. Si la descarga falla, configura el proxy y vuelve a ejecutar `node scripts/vendor.mjs`.
+`web/vendor/` es un directorio generado, no versionado: `scripts/vendor.mjs` lo reconstruye tras `npm install`, copiando las librerías de `node_modules` y el modelo de pose de `assets/models/`. La instalación no descarga nada.
 
 El directorio `assets/` contiene los recursos integrados y se incluye en el empaquetado. El repositorio solo incluye el **paquete mínimo de verificación** (los recursos grandes o personales no se suben al repositorio):
 
@@ -83,7 +83,7 @@ El directorio `assets/` contiene los recursos integrados y se incluye en el empa
 
 ## Migración de datos entre dispositivos
 
-La app no se conecta a internet ni requiere registro; todos los datos se guardan en local. Para llevar los datos a otro dispositivo, usa "Ajustes → Exportar / Importar paquete de datos" para generar un archivo `.dtx`: selección por categorías (entrenamientos / peso / coreografías / mocap / canciones / análisis de ritmo / ajustes), compresión gzip y cifrado SM9 — la clave de cifrado se deriva de "identificador de cuenta + contraseña", sin pasar por ningún servidor; en el otro dispositivo, descifra e importa con la misma cuenta + contraseña.
+La app no se conecta a internet ni requiere registro; todos los datos se guardan en local. Para llevar los datos a otro dispositivo, usa "Ajustes → Datos → Exportar paquete de datos" y genera un archivo `.dtx`: selección por categoría (entrenamientos / peso y cintura / mis coreografías / captura de movimiento importada / copias de canciones / análisis de ritmo / ajustes), compresión gzip y cifrado SM9 (modo SM4). La clave se deriva solo de la contraseña (mínimo 8 caracteres); la contraseña no se escribe en el archivo ni sale de tu equipo. La importación es incremental: el contenido se deduplica, así que lo que ya existe se conserva y solo se añade lo que falta. Los paquetes exportados por versiones anteriores con «cuenta + contraseña» se siguen importando sin problema.
 
 ## Licencia
 
@@ -103,10 +103,9 @@ La versión de macOS no está firmada con certificado de desarrollador, solo con
 ## Primer uso
 
 1. **Biblioteca de canciones → Añadir carpeta completa**: elige tu directorio de música y el análisis de ritmo comienza en segundo plano. La música se copia al directorio de datos de la app (el contenido idéntico se guarda una sola vez), tras lo cual puedes borrar o mover los originales. Las canciones importadas anteriormente se copian automáticamente al arrancar.
-2. Si esas canciones estaban antes en un servidor GPU, ve a **Ajustes → Importar paquete de análisis de ritmo** e importa `beat_pack.json`; las canciones coincidentes no vuelven a analizarse.
-3. **Ajustes → Importar datos antiguos**: importa `legacy.json`, incluidos los registros de entrenamiento, el peso y la fecha de inicio del plan de la versión de servidor.
-4. ¿Quieres tu propia voz? En **Ajustes → Entrenador de voz** sube grabaciones con el nombre del texto de cada frase para reemplazar la voz del idioma actual, o restaura el paquete integrado con un clic.
-5. Primero practica cada ejercicio en **Tutorial de ejercicios** y luego empieza el entrenamiento desde la página principal.
+2. Si vienes de una versión anterior, en **Ajustes → Datos** tienes «Importar datos antiguos» (`legacy.json`: entrenamientos, peso y fecha de inicio del plan, sin duplicados) e «Importar paquete de análisis de ritmo» (`beat_pack.json`: se empareja por huella del contenido, así que esas canciones no se reanalizan).
+3. ¿Quieres tu propia voz? En **Ajustes → Entrenador de voz** sube grabaciones con el nombre del texto de cada frase para reemplazar la voz del idioma actual, o restaura el paquete integrado con un clic.
+4. Primero practica cada ejercicio en **Tutorial de ejercicios** y luego empieza el entrenamiento desde la página principal.
 
 Consejos de colocación: sitúate a 2,5–3 metros de la cámara con el cuerpo entero en el encuadre (incluidos los tobillos) y la luz de frente. Antes de cada canción, ponte de pie erguido con los brazos relajados a los lados durante unos 1 segundo para completar la calibración.
 
