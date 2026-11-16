@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows is in the matrix on purpose: the i18n check used to load the
+        # locale pack through a bare absolute path, which only works on POSIX.
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # postinstall copies node_modules into web/vendor and the pose model from
+      # assets/models — no network fetch involved.
+      - name: Install
+        run: npm ci
+
+      # renderer import-graph check, i18n key check, then the unit tests
+      - name: Unit tests and static checks
+        run: npm test
