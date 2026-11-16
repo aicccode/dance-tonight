@@ -1,5 +1,7 @@
 # Dance Tonight · 100-Day Abs & Fat-Burn Plan (Desktop)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 A fitness game set to music, and also a 3D dance-along training tool. Fitness moves are judged by camera for how well you hit each position, scored on accuracy and rhythm; complex dances focus on watching the coach, learning the steps, and following the full choreography. The VRM coach on screen demonstrates continuously, with voice cues announcing the next move in advance.
 
 Supports Windows, macOS, and Linux. Everything runs locally, no server needed, and your camera feed never leaves your computer.
@@ -56,6 +58,19 @@ Want to learn more jazz/contemporary dance: search Jazz / Contemporary / Dance o
 **Choreograph your own**: under "Dance → My Choreography → New Choreography", drag moves from the library on the right into the sequence (drop between two moves to insert there), or click a move to append it after the selected one; moves in the sequence can be reordered by dragging, deleted with Delete, or mirror-flipped left/right in one click. Each move occupies time by its own length: normal moves take 1 beat, turns/waves take their own beat counts, and mocap (both imported and built-in contemporary) plays the whole clip at original speed, with the next move starting on the immediately following beat. For a performance, pick a song and dance from the first move to the end of the last (the music fades out accordingly); section practice automatically splits the sequence into chunks of about 8 beats. Built-in choreographies can be "duplicated and edited" as a starting point. Choreographies are saved in `data/data.json` in the data directory.
 
 **Advanced choreographies**: "Flowing Silhouette" focuses on body lines, arm waves, and chest/shoulder isolations; "Spinning Stage" focuses on lateral footwork, full turns, and back-facing combinations. Multi-beat moves are demonstrated fully over 2 or 4 beats and never switch mid-animation.
+
+## Download & Install
+
+No coding required: grab the installer for your platform from [Releases](https://github.com/aicccode/dance-tonight/releases/latest). Double-click to install — no account, no online activation.
+
+| Platform | File | How to install |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | Run it. SmartScreen shows "Unknown publisher" the first time — click "More info → Run anyway" |
+| macOS (Apple silicon) | `Dance.Tonight-*-arm64.dmg` | Drag the icon into Applications; it is not notarised, so right-click → Open the first time |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | Same as above |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` and run it; if FUSE is missing, install `libfuse2` |
+
+The app carries no code-signing certificate, so Windows and macOS warn about an unknown developer. All the source is right here — audit it, or build from source with the next section.
 
 ## Run from Source (all three platforms)
 

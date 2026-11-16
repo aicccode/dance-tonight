@@ -1,5 +1,7 @@
 # Dance Tonight · Plano de 100 Dias de Abdômen e Queima de Gordura (Desktop)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 Um jogo fitness em que você se exercita no ritmo da música, e também uma ferramenta de aprendizado de dança em 3D. Os movimentos fitness são avaliados pela câmera quanto à execução correta e pontuados por precisão e ritmo; nas danças complexas, o foco é observar a treinadora, aprender os passos e acompanhar a coreografia até o fim. A treinadora VRM na tela demonstra os movimentos continuamente e avisa por voz qual é o próximo.
 
 Suporta Windows, macOS e Linux. Tudo roda localmente, sem servidor — as imagens da câmera nunca saem do seu computador.
@@ -56,6 +58,19 @@ Para aprender mais jazz/dança moderna: pesquise Jazz / Contemporary / Dance no 
 **Coreografia própria**: em "Dança → Minhas coreografias → Nova coreografia", arraste movimentos da biblioteca à direita para a sequência (arrastando entre dois movimentos, insere ali) ou clique em um movimento para adicioná-lo depois do selecionado; os movimentos da sequência podem ser reordenados arrastando, excluídos com Delete e espelhados esquerda/direita com um clique. Cada movimento ocupa tempo conforme sua própria duração: movimentos normais, 1 tempo; giros/waves conforme suas batidas próprias; motion capture (importado e dança moderna embutida) toca o trecho inteiro em velocidade original, e o próximo movimento começa na batida seguinte. Na apresentação, escolha uma música e dance do primeiro ao último movimento (a música faz fade-out junto); a prática por trechos divide automaticamente a sequência em blocos de cerca de 8 tempos. As coreografias embutidas podem ser "copiadas e adaptadas" como ponto de partida. As coreografias ficam salvas em `data/data.json` no diretório de dados.
 
 **Coreografias avançadas**: "Glow Flow" enfatiza linhas do corpo, arm wave e isolamento de peito/ombros; "Rotating Stage" enfatiza passos laterais, giros completos e combinações de costas. Movimentos de várias batidas são demonstrados por completos em 2 ou 4 batidas, sem trocar no meio da animação.
+
+## Download e instalação
+
+Sem programar: baixe o instalador da sua plataforma em [Releases](https://github.com/aicccode/dance-tonight/releases/latest). Bastam dois cliques — sem conta, sem ativação online.
+
+| Plataforma | Arquivo | Como instalar |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | Execute. Na primeira vez o SmartScreen mostra "Editor desconhecido": clique em "Mais informações → Executar mesmo assim" |
+| macOS (chip Apple) | `Dance.Tonight-*-arm64.dmg` | Arraste o ícone para "Aplicativos"; não é notarizado, então na primeira vez use botão direito → Abrir |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | Igual ao acima |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` e execute; se faltar FUSE, instale `libfuse2` |
+
+O app não tem certificado de assinatura de código, então Windows e macOS avisam sobre um desenvolvedor desconhecido. Todo o código está neste repositório — confira ou compile conforme a próxima seção.
 
 ## Executar a partir do código-fonte (vale para as três plataformas)
 

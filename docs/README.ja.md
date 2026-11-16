@@ -1,5 +1,7 @@
 # Dance Tonight · 100日間腹筋燃焼プラン（デスクトップ版）
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 音楽に合わせて体を動かすフィットネスゲームであり、3Dダンス練習ツールでもあります。フィットネス動作はカメラでフォームの出来栄えを判定し、正確度とリズムでスコア化。複雑なダンスは、インストラクターを見てステップを覚え、振り付けを最後まで踊るスタイルです。画面上のVRMコーチが連続でお手本を見せ、音声が次の動きを事前に知らせます。
 
 Windows、macOS、Linuxに対応。すべてローカルで動作し、サーバーは不要。カメラ映像があなたのPCの外に出ることはありません。
@@ -56,6 +58,19 @@ Windows、macOS、Linuxに対応。すべてローカルで動作し、サーバ
 **自分で振り付けを作る**：「ダンス → マイ振り付け → 新規振り付け」で、右側の動作ライブラリから動きをシーケンスにドラッグ（2つの動きの間にドロップするとそこに挿入）、または動きをクリックして選択中の動きの後ろに追加。シーケンス内の動きはドラッグで順序変更、Deleteキーで削除、ワンクリックで左右ミラー反転も可能です。各動きはそれぞれの長さで時間を占有：通常の動きは1拍、ターン/ウェーブなどはそれぞれの拍数、モーキャプ（インポートしたものも内蔵モダンダンスも）は全体を原速で再生し、次の動きは直後の拍から始まります。披露時は曲を1つ選び、最初の動きから最後の動きの終わりまで踊ります（音楽もそれに合わせてフェードアウト）。セクション練習ではシーケンスを約8拍ごとに自動分割します。内蔵の振り付けは「コピーしてアレンジ」を起点にできます。振り付けはデータディレクトリの `data/data.json` に保存されます。
 
 **上級振り付け**：「フローボディ」はボディライン、アームウェーブ、胸と肩のアイソレーションを重視。「ローテーションステージ」は横方向のステップ、完全なターン、背面コンビネーションを重視。複数拍の動きは2拍または4拍で完全にお手本を見せ、アニメーション途中で切り替えません。
+
+## ダウンロードとインストール
+
+コードを書かなくても使えます。[Releases](https://github.com/aicccode/dance-tonight/releases/latest) からお使いのプラットフォームのインストーラーをダウンロードし、ダブルクリックするだけです。アカウント登録もオンライン認証も不要です。
+
+| プラットフォーム | ファイル | インストール方法 |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | 実行するだけ。初回は SmartScreen が「不明な発行元」と表示するので「詳細情報 → 実行」を選びます |
+| macOS (Apple シリコン) | `Dance.Tonight-*-arm64.dmg` | アイコンを「アプリケーション」へドラッグ。公証を受けていないため、初回は右クリック →「開く」 |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | 上と同じ |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` して実行。FUSE が無い場合は `libfuse2` を入れてください |
+
+コード署名証明書を取得していないため、Windows と macOS では「不明な開発元」という警告が出ます。ソースはすべてこのリポジトリにあります。確認するか、次の節の手順でソースからビルドしてください。
 
 ## ソースから実行（3プラットフォーム共通）
 

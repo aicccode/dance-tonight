@@ -1,0 +1,93 @@
+name: Bug report / 问题反馈
+description: Something is broken — please include your OS, the package type and how to reproduce.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! 请尽量填全，尤其是**版本**和**系统**——大部分问题都跟平台/摄像头有关。
+        Please search existing issues first, and do not paste personal data or camera footage.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / 版本
+      description: Release tag or the version shown in Settings → About / 设置里的版本号
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform / 平台
+      options:
+        - Windows 10 / 11 (x64)
+        - macOS (Apple silicon / arm64)
+        - macOS (Intel / x64)
+        - Linux (AppImage, x64)
+        - Built from source / 从源码运行
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened / 发生了什么
+      description: What you expected vs. what actually happened. / 期望的结果与实际结果。
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 复现步骤
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area / 涉及功能
+      multiple: true
+      options:
+        - Today's workout / 今日训练
+        - Sprint challenge / 竞速挑战
+        - Move tutorial / 动作教学
+        - Dance mode / 舞蹈模式
+        - Motion capture import / 导入动捕
+        - Camera scoring / 摄像头评分
+        - Voice coach / 语音教练
+        - Coach window / 教练浮窗
+        - Beat analysis / 节拍分析
+        - Settings & i18n / 设置与多语言
+        - Export & import / 导出与导入
+        - Packaging / 安装包
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output / 控制台报错
+      description: |
+        The app does not write log files yet — please paste errors from DevTools instead:
+        这个版本还不写日志文件，请改贴 DevTools 里的报错：
+        1. Open DevTools with Ctrl + Shift + I (Windows / Linux) or Cmd + Option + I (macOS).
+        2. Reproduce the problem, then copy the red error lines from the Console tab.
+        Data directory (useful for odd state bugs) / 数据目录：
+        `%APPDATA%\Dance Tonight\` · `~/Library/Application Support/Dance Tonight/` · `~/.config/Dance Tonight/`
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or extra context / 截图或补充
+      description: Drag images in here. / 可直接拖图片进来。
+    validations:
+      required: false

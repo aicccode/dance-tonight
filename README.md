@@ -1,5 +1,7 @@
 # Dance Tonight · 100 天腹肌燃脂计划（桌面版）
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 **Read this in other languages:** [English](docs/README.en.md) · [Español](docs/README.es.md) · [Русский](docs/README.ru.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Français](docs/README.fr.md) · [Deutsch](docs/README.de.md) · [Português](docs/README.pt.md) · [العربية](docs/README.ar.md)（译文如有出入，以中文版为准）
 
 跟着音乐做动作的健身游戏，也是一套 3D 舞蹈跟练工具：健身动作由摄像头判断到位程度，按准确度和节奏打分；舞蹈以看教练、学分步、跟完编舞为主。屏幕上的 VRM 教练会连续示范，语音提前报下一个动作。
@@ -46,6 +48,19 @@
 **导入动捕**：在 [Mixamo](https://www.mixamo.com/) 搜 Jazz / Contemporary / Dance，下载选 **FBX Binary**、Skin 选 **Without Skin**，到「舞蹈 → 导入动捕文件」批量导入（可一次几十个，损坏的文件单独列出、不影响其余）。导入时自动识别骨骼（Mixamo / CMU / 常见 BVH / VRMA）、校正坐标轴与朝向、对齐 A/T 姿势差异、去掉捕捉抖动、裁掉首尾静止段，结果存在数据目录的 `dances/`。
 
 **自己编舞**：在「舞蹈 → 我的编舞 → 新建编舞」里，把动作拖进序列（拖到两个动作之间就插在那里），或点动作加在选中项后面；序列可拖动排序、按 Delete 删除、一键左右镜像。普通动作占 1 拍，转身/波浪按各自拍数，动捕片段整段原速播放，下一个动作接着拍子开始。表演时选一首歌，从第一个动作跳到最后一个（音乐随之淡出）；分段练习会自动按约 8 拍切段。内置编舞可以「复制改编」作为起点。编舞存在数据目录的 `data/data.json`。
+
+## 下载安装
+
+不写代码也能用：到 [Releases](https://github.com/aicccode/dance-tonight/releases/latest) 下载对应平台的安装包，双击即可。不需要注册，不需要联网激活。
+
+| 平台 | 文件 | 安装方式 |
+|---|---|---|
+| Windows 10 / 11（x64） | `Dance.Tonight.Setup.*.exe` | 双击安装。首次运行 SmartScreen 会提示「未知发布者」，点「更多信息 → 仍要运行」 |
+| macOS（Apple 芯片） | `Dance.Tonight-*-arm64.dmg` | 把图标拖进「应用程序」；未公证，首次打开需右键 → 打开 |
+| macOS（Intel） | `Dance.Tonight-*.dmg` | 同上 |
+| Linux（x64） | `Dance.Tonight-*.AppImage` | `chmod +x` 后直接运行；若提示缺少 FUSE，先装 `libfuse2` |
+
+程序没有购买代码签名证书，所以 Windows 与 macOS 会提示「未知开发者」，这不是病毒——源码全部在仓库里，可自行核对，或按下一节从源码构建。
 
 ## 从源码运行
 

@@ -1,0 +1,48 @@
+name: Feature request / 功能建议
+description: Suggest an idea, a move, a language or a platform.
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome — please say **why** you want it, not only what it should look like.
+        欢迎提建议，重点说清楚「想解决什么问题」。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve? / 想解决什么问题
+      description: The situation you are in when you miss this feature. / 你在什么场景下觉得缺了它。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution / 你设想的做法
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind / 类型
+      options:
+        - New fitness move / 新健身动作
+        - New dance move or choreography / 新舞蹈动作或编舞
+        - New UI language / 新界面语言
+        - Scoring or calibration / 评分与校准
+        - Voice coach / 语音教练
+        - Import or export / 导入导出
+        - Packaging or platform support / 打包与平台支持
+        - Other / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered / 考虑过的替代方案
+    validations:
+      required: false

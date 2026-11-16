@@ -1,5 +1,7 @@
 # Dance Tonight · 100일 복근 지방 연소 플랜(데스크톱 버전)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 음악에 맞춰 움직이는 피트니스 게임이자 3D 댄스 따라하기 도구입니다. 피트니스 동작은 카메라로 자세의 완성도를 판단해 정확도와 리듬으로 점수를 매기고, 복잡한 댄스는 강사를 보고 스텝을 익히며 안무를 끝까지 따라추는 방식입니다. 화면의 VRM 코치가 연속으로 시범을 보여 주고, 음성이 다음 동작을 미리 알려 줍니다.
 
 Windows, macOS, Linux를 지원합니다. 전부 로컬에서 실행되며 서버가 필요 없고, 카메라 화면은 여러분의 PC 밖으로 나가지 않습니다.
@@ -56,6 +58,19 @@ Windows, macOS, Linux를 지원합니다. 전부 로컬에서 실행되며 서�
 **직접 안무 만들기**: 「댄스 → 내 안무 → 새 안무」에서 오른쪽 동작 라이브러리의 동작을 시퀀스로 드래그합니다(두 동작 사이에 놓으면 그 자리에 삽입)하거나, 동작을 클릭해 선택된 동작 뒤에 바로 추가할 수도 있습니다. 시퀀스의 동작은 드래그로 순서 조정, Delete 키로 삭제, 원클릭 좌우 미러 반전이 가능합니다. 각 동작은 자신의 길이만큼 시간을 차지합니다: 일반 동작은 1박, 회전/웨이브 등은 각자의 박자 수, 모캡(가져온 것과 내장 현대무용 모두)은 전체를 원래 속도로 재생하고 다음 동작은 바로 이어지는 박자부터 시작합니다. 공연할 때는 노래를 하나 골라 첫 동작부터 마지막 동작이 끝날 때까지 춥니다(음악도 이에 맞춰 페이드아웃). 구간 연습은 시퀀스를 약 8박 단위로 자동 분할합니다. 내장 안무는 「복사 후 편집」으로 시작점 삼아 활용할 수 있습니다. 안무는 데이터 디렉터리의 `data/data.json`에 저장됩니다.
 
 **상급 안무**: 「플로우 바디」는 바디 라인, 암 웨이브, 가슴·어깨 아이솔레이션에 중점을 둡니다. 「로테이션 스테이지」는 측면 스텝, 완전한 회전, 등 뒤 조합에 중점을 둡니다. 여러 박자 동작은 2박 또는 4박으로 온전히 시범 보이며 애니메이션 중간에 전환하지 않습니다.
+
+## 다운로드 및 설치
+
+코딩 없이 바로 쓸 수 있습니다. [Releases](https://github.com/aicccode/dance-tonight/releases/latest)에서 사용하는 플랫폼의 설치 파일을 내려받아 실행하면 됩니다. 가입도, 온라인 인증도 필요 없습니다.
+
+| 플랫폼 | 파일 | 설치 방법 |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | 실행합니다. 처음 실행하면 SmartScreen이 "알 수 없는 게시자"를 표시하니 "추가 정보 → 실행"을 누르세요 |
+| macOS (Apple 실리콘) | `Dance.Tonight-*-arm64.dmg` | 아이콘을 "응용 프로그램"으로 끌어다 놓습니다. 공증을 받지 않았으므로 처음에는 우클릭 → 열기 |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | 위와 같습니다 |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` 후 실행합니다. FUSE가 없으면 `libfuse2`를 설치하세요 |
+
+코드 서명 인증서가 없어 Windows와 macOS에서 "알 수 없는 개발자" 경고가 뜹니다. 소스는 모두 이 저장소에 있으니 직접 확인하거나 다음 절대로 소스에서 빌드하세요.
 
 ## 소스에서 실행하기(3개 플랫폼 공통)
 

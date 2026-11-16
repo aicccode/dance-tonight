@@ -1,5 +1,7 @@
 # Dance Tonight · Programme abdos brûle-graisses 100 jours (version desktop)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 Un jeu de fitness où l'on bouge en musique, mais aussi un outil d'apprentissage de danse 3D. Les mouvements de fitness sont évalués par la caméra selon la qualité d'exécution et notés sur la précision et le rythme ; pour les danses complexes, l'essentiel est de regarder le coach, d'apprendre les pas et de suivre la chorégraphie jusqu'au bout. Le coach VRM à l'écran enchaîne les démonstrations et la voix annonce à l'avance le mouvement suivant.
 
 Compatible Windows, macOS et Linux. Tout fonctionne en local, sans serveur : les images de la caméra ne quittent jamais votre ordinateur.
@@ -56,6 +58,19 @@ Pour apprendre davantage de jazz/danse contemporaine : cherchez Jazz / Contempor
 **Composer vos propres chorégraphies** : dans « Danse → Mes chorégraphies → Nouvelle chorégraphie », faites glisser les mouvements de la bibliothèque de droite dans la séquence (en les lâchant entre deux mouvements, ils s'insèrent à cet endroit), ou cliquez simplement sur un mouvement pour l'ajouter après celui sélectionné. Dans la séquence, les mouvements peuvent être réordonnés par glisser-déposer, supprimés avec la touche Suppr, ou inversés gauche-droite en un clic. Chaque mouvement occupe le temps de sa propre durée : 1 temps pour un mouvement normal, son nombre de temps pour une rotation/wave, et le mocap (importé comme contemporain intégré) est lu en entier à vitesse originale, le mouvement suivant commençant au temps immédiatement consécutif. Pour la performance, choisissez un morceau et dansez du premier au dernier mouvement (la musique s'estompe en conséquence) ; la pratique par segments découpe automatiquement la séquence en sections d'environ 8 temps. Les chorégraphies intégrées peuvent être « copiées puis modifiées » comme point de départ. Les chorégraphies sont enregistrées dans `data/data.json` du répertoire de données.
 
 **Chorégraphies avancées** : « Silhouettes fluides » met l'accent sur les lignes du corps, l'arm wave et l'isolation poitrine-épaules ; « Scène tournante » sur les pas latéraux, les rotations complètes et les enchaînements de dos. Les mouvements sur plusieurs temps sont démontrés en entier sur 2 ou 4 temps, sans bascule au milieu de l'animation.
+
+## Téléchargement et installation
+
+Pas besoin de coder : téléchargez l'installeur de votre plateforme depuis [Releases](https://github.com/aicccode/dance-tonight/releases/latest). Un double-clic suffit — sans compte, sans activation en ligne.
+
+| Plateforme | Fichier | Installation |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | Lancez-le. Au premier démarrage, SmartScreen affiche « Éditeur inconnu » : cliquez sur « Informations complémentaires → Exécuter quand même » |
+| macOS (puce Apple) | `Dance.Tonight-*-arm64.dmg` | Glissez l'icône dans « Applications » ; l'app n'est pas notariée, donc la première fois : clic droit → Ouvrir |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | Idem |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` puis lancez-le ; si FUSE manque, installez `libfuse2` |
+
+L'application n'est pas signée, Windows et macOS signaleront donc un développeur inconnu. Tout le code est dans ce dépôt : vérifiez-le, ou compilez-le avec la section suivante.
 
 ## Exécuter depuis les sources (commun aux trois plateformes)
 

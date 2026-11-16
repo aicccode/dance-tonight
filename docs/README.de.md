@@ -1,5 +1,7 @@
 # Dance Tonight · 100-Tage-Bauchmuskel-Fettverbrennungsplan (Desktop)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 Ein Fitness-Spiel, bei dem man sich zur Musik bewegt, und zugleich ein 3D-Tanz-Lernwerkzeug. Fitnessübungen werden per Kamera daraufhin bewertet, wie sauber sie ausgeführt werden, und nach Genauigkeit und Rhythmus benotet; bei komplexen Tänzen steht das Abschauen vom Coach, das Lernen der Schritte und das Durchlaufen der Choreografie im Vordergrund. Der VRM-Coach auf dem Bildschirm zeigt die Bewegungen fortlaufend vor und kündigt per Sprachausgabe die nächste Übung an.
 
 Unterstützt Windows, macOS und Linux. Läuft komplett lokal, benötigt keinen Server – die Kamerabilder verlassen deinen Rechner nicht.
@@ -56,6 +58,19 @@ Wer mehr Jazz-/Modern Dance lernen möchte: Auf [Mixamo](https://www.mixamo.com/
 **Eigene Choreografie**: Unter „Tanz → Meine Choreografien → Neue Choreografie“ Bewegungen aus der Bibliothek rechts in die Sequenz ziehen (zwischen zwei Bewegungen gezogen, wird sie genau dort eingefügt) oder per Klick direkt hinter die ausgewählte Bewegung anhängen; Bewegungen in der Sequenz lassen sich per Ziehen umsortieren, mit Delete löschen und auf einen Klick links/rechts spiegeln. Jede Bewegung belegt Zeit nach ihrer eigenen Länge: normale Bewegungen 1 Takt, Drehungen/Waves je nach ihrer Taktzahl, Motion-Capture (importierte wie eingebaute Modern-Dance-Moves) wird komplett in Originalgeschwindigkeit abgespielt, die nächste Bewegung beginnt direkt am folgenden Takt. Für die Vorführung einen Song wählen und von der ersten bis zur letzten Bewegung tanzen (die Musik blendet dabei aus); die Abschnittsübung teilt die Sequenz automatisch in etwa 8-taktige Abschnitte. Eingebaute Choreografien lassen sich per „Kopieren & Anpassen“ als Ausgangspunkt nutzen. Choreografien werden in `data/data.json` im Datenverzeichnis gespeichert.
 
 **Fortgeschrittene Choreografien**: „Glow Flow“ betont Körperlinien, Arm-Waves und Brust-/Schulter-Isolation; „Rotating Stage“ betont seitliche Schritte, komplette Drehungen und Rücken-Kombinationen. Mehrtaktige Bewegungen werden vollständig über 2 oder 4 Takte demonstriert, kein Wechsel mitten in der Animation.
+
+## Herunterladen und installieren
+
+Ohne Programmieren: Installer für die eigene Plattform unter [Releases](https://github.com/aicccode/dance-tonight/releases/latest) herunterladen. Doppelklick genügt — kein Konto, keine Online-Aktivierung.
+
+| Plattform | Datei | Installation |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | Ausführen. Beim ersten Start meldet SmartScreen „Unbekannter Herausgeber“ — auf „Weitere Informationen → Trotzdem ausführen“ klicken |
+| macOS (Apple Silicon) | `Dance.Tonight-*-arm64.dmg` | Symbol in „Programme“ ziehen; nicht notarisiert, daher beim ersten Mal Rechtsklick → Öffnen |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | Wie oben |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` und starten; fehlt FUSE, `libfuse2` installieren |
+
+Die App ist nicht signiert, deshalb warnen Windows und macOS vor einem unbekannten Entwickler. Der komplette Quellcode liegt in diesem Repository — prüfen oder mit dem nächsten Abschnitt selbst bauen.
 
 ## Ausführen vom Quellcode (für alle drei Plattformen)
 

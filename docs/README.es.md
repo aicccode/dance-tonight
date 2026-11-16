@@ -1,5 +1,7 @@
 # Dance Tonight · Plan de 100 días de abdomen y quema de grasa (Escritorio)
 
+[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+
 Un juego de fitness al ritmo de la música y, a la vez, una herramienta de entrenamiento de baile en 3D. Los ejercicios de fitness se evalúan con la cámara según qué tan bien alcanzas cada posición, puntuando precisión y ritmo; los bailes complejos se centran en observar al entrenador, aprender los pasos y seguir la coreografía completa. El entrenador VRM en pantalla demuestra de forma continua y la voz te anticipa el siguiente movimiento.
 
 Compatible con Windows, macOS y Linux. Todo funciona en local, sin servidor, y la imagen de la cámara nunca sale de tu ordenador.
@@ -56,6 +58,19 @@ Compatible con Windows, macOS y Linux. Todo funciona en local, sin servidor, y l
 **Crea tus propias coreografías**: en "Baile → Mis coreografías → Nueva coreografía", arrastra movimientos de la biblioteca de la derecha a la secuencia (suéltalos entre dos movimientos para insertarlos ahí), o haz clic en un movimiento para añadirlo tras el seleccionado; los de la secuencia se pueden reordenar arrastrando, borrar con Delete o espejar izquierda-derecha con un clic. Cada movimiento ocupa tiempo según su propia duración: los normales 1 tiempo, los giros/waves sus propios tiempos, y el mocap (tanto importado como contemporáneo integrado) se reproduce entero a velocidad original, empezando el siguiente movimiento en el tiempo inmediatamente posterior. Para una actuación, elige una canción y baila desde el primer movimiento hasta el final del último (la música se desvanece en consecuencia); la práctica por secciones divide automáticamente la secuencia en tramos de unos 8 tiempos. Las coreografías integradas se pueden "duplicar y editar" como punto de partida. Las coreografías se guardan en `data/data.json` del directorio de datos.
 
 **Coreografías avanzadas**: "Silueta Fluida" se centra en las líneas del cuerpo, las waves de brazos y las isolaciones de pecho y hombros; "Escenario Giratorio" se centra en el trabajo lateral de pies, los giros completos y las combinaciones de espaldas. Los movimientos de varios tiempos se demuestran completos en 2 o 4 tiempos y nunca cambian a mitad de la animación.
+
+## Descargar e instalar
+
+Sin escribir código: descarga el instalador de tu plataforma en [Releases](https://github.com/aicccode/dance-tonight/releases/latest). Doble clic para instalar; sin cuenta y sin activación en línea.
+
+| Plataforma | Archivo | Cómo instalar |
+|---|---|---|
+| Windows 10 / 11 (x64) | `Dance.Tonight.Setup.*.exe` | Ejecútalo. La primera vez SmartScreen muestra «Editor desconocido»: pulsa «Más información → Ejecutar de todas formas» |
+| macOS (chip Apple) | `Dance.Tonight-*-arm64.dmg` | Arrastra el icono a Aplicaciones; no está notarizado, así que la primera vez hay que hacer clic derecho → Abrir |
+| macOS (Intel) | `Dance.Tonight-*.dmg` | Igual que arriba |
+| Linux (x64) | `Dance.Tonight-*.AppImage` | `chmod +x` y ejecútalo; si falta FUSE, instala `libfuse2` |
+
+La aplicación no tiene certificado de firma de código, así que Windows y macOS avisarán de un desarrollador desconocido. Todo el código está en este repositorio: revísalo o compílalo con la sección siguiente.
 
 ## Ejecutar desde el código fuente (las tres plataformas)
 
