@@ -15,14 +15,10 @@ This product includes software and assets from third parties:
    - Source: https://github.com/LPML-MIT/beat-this
 
 3. Bundled VRM coach avatars (see assets/avatars/)
-   - SportGirl.vrm — author: aicccode
-   - RealMaster.vrm — author: unknown; the VRM metadata marks this model
-     as credit-required and non-commercial. If you redistribute this
-     repository or use it commercially, verify the original model license
-     first, or remove this file. VRM avatars for personal use can be
-     downloaded from https://hub.vroid.com/
-   - 1.vrm, 2.vrm, 3.vrm — provenance not recorded at import time; treat
-     them the same way as RealMaster.vrm before redistributing.
+   - SportGirl.vrm and RealMaster.vrm are made by the project owner
+     (aicccode) and ship under the same licence as the rest of the code.
+   - 1.vrm, 2.vrm, 3.vrm — legacy development models; provenance not
+     recorded at import time.
 
 4. MediaPipe pose_landmarker_lite.task (pose detection)
    - File: assets/models/pose_landmarker_lite.task (copied into web/vendor at

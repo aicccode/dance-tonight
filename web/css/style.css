@@ -414,3 +414,25 @@ table.dense { width: 100%; border-collapse: collapse; }
   .day { font-size: 46px; }
   .view { padding: 12px 14px; }
 }
+
+/* ---------- online music (open licences) ---------- */
+.online { width: min(860px, 94vw); max-height: 86vh; display: grid; grid-template-rows: auto auto auto minmax(0, 1fr) auto; gap: 12px; box-shadow: var(--shadow); }
+.online-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.online-head h2 { font-size: 17px; }
+.online-search { display: flex; gap: 8px; }
+.online-search input { flex: 1; min-width: 0; }
+.online-status { min-height: 18px; font-size: 12px; }
+.online-status.err { color: var(--danger); }
+.online-list { overflow: auto; min-height: 140px; display: grid; gap: 6px; align-content: start; padding-right: 4px; }
+.online-empty { padding: 18px 4px; color: var(--muted); font-size: 13px; }
+.online-item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel-2); }
+.online-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.online-meta b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.online-meta .sub { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.online-item .num { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+.online-item.playing { border-color: var(--accent); }
+.online-item.playing .num { color: var(--accent); }
+@media (max-width: 640px) {
+  .online-item { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .online-item .num { display: none; }
+}

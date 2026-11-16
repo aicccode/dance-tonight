@@ -37,6 +37,8 @@ Compatible Windows, macOS et Linux. Tout fonctionne en local, sans serveur : les
   - position des temps : concordance F = 0,995 avec le modèle PyTorch original.
   - En cas d'échec de chargement du modèle, bascule automatique vers l'algorithme de beats en pur JavaScript intégré.
 
+- **Musique en ligne** : cherchez des titres libres de droits depuis la bibliothèque (Openverse, qui agrège Freesound, Jamendo, Wikimedia Commons, etc., sans compte). Seules les licences à usage commercial (CC0 / CC-BY / CC-BY-SA) sont retournées ; écoutez, importez en un clic et l'analyse du rythme démarre toute seule.
+
 ## Les mouvements
 
 **Mouvements de fitness** (par niveau de déblocage) :

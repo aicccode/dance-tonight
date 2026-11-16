@@ -37,6 +37,8 @@ Supports Windows, macOS, and Linux. Everything runs locally, no server needed, a
   - Beat positions agree with the original PyTorch model at F = 0.995.
   - If the model fails to load, it automatically falls back to the built-in pure-JS beat algorithm.
 
+- **Online music**: search royalty-free tracks right in the library (Openverse aggregating Freesound, Jamendo, Wikimedia Commons and more, no account needed). Only commercially usable licences (CC0 / CC-BY / CC-BY-SA) are returned; preview, import with one click, and the beat analysis starts automatically.
+
 ## Moves
 
 **Fitness moves** (by unlock level):

@@ -37,6 +37,8 @@ Suporta Windows, macOS e Linux. Tudo roda localmente, sem servidor — as imagen
   - a concordância das posições das batidas com o modelo PyTorch original foi F = 0,995.
   - Se o carregamento do modelo falhar, o app passa automaticamente ao algoritmo de batidas em JS puro embutido.
 
+- **Música online**: pesquise faixas royalty-free na própria biblioteca (Openverse, que agrega Freesound, Jamendo, Wikimedia Commons e mais, sem conta). Só retorna licenças de uso comercial (CC0 / CC-BY / CC-BY-SA); ouça, importe com um clique e a análise de batida começa sozinha.
+
 ## Movimentos
 
 **Movimentos fitness** (por nível de desbloqueio):

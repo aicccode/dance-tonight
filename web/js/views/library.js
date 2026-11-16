@@ -60,6 +60,27 @@ export function initLibrary({ play }) {
   onPlay = play;
   $("#btn-add-files").addEventListener("click", () => guard(async () => added(await api.addSongs("files"))));
   $("#btn-add-folder").addEventListener("click", () => guard(async () => added(await api.addSongs("folder"))));
+  $("#btn-add-online").addEventListener("click", openOnline);
+  $("#online-close").addEventListener("click", closeOnline);
+  $("#view-online").addEventListener("click", (e) => {
+    if (e.target.id === "view-online") closeOnline();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !$("#view-online").hidden) closeOnline();
+  });
+  $("#online-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    guard(runSearch);
+  });
+  $("#online-list").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const i = Number(btn.closest(".online-item").dataset.i);
+    const item = online.items[i];
+    if (!item) return;
+    if (btn.dataset.act === "preview") togglePreview(i);
+    if (btn.dataset.act === "import") guard(() => importOnline(btn, item));
+  });
   $("#song-filter").addEventListener("input", () => renderLibrary());
   $("#song-sort").addEventListener("change", () => renderLibrary());
 
@@ -118,4 +139,119 @@ export function initLibrary({ play }) {
       refresh = setTimeout(() => renderLibrary(), 400);
     }
   });
+}
+
+// ---------------------------------------------------------------- online music
+// Search open-licence audio (Openverse: CC0 / CC-BY / CC-BY-SA) and pull it
+// straight into the library. The network calls live in the main process, so the
+// renderer only ever deals with plain JSON.
+const online = { items: [], audio: null, playing: -1 };
+
+function onlineStatus(text = "", isError = false) {
+  const el = $("#online-status");
+  el.textContent = text;
+  el.classList.toggle("err", !!isError);
+}
+
+/** Turn an IPC error message ("rate", "network: ...") into localised text. */
+function onlineMessage(err) {
+  const known = ["rate", "network", "search", "too-large", "not-audio", "offline"];
+  const code = String(err?.message ?? "").split(":")[0].trim();
+  return t(known.includes(code) ? `online.err.${code}` : "online.err.generic");
+}
+
+function onlineRow(item, i) {
+  const sub = [item.creator, item.provider, item.license].filter(Boolean).join(" · ");
+  const playing = online.playing === i;
+  const icon = playing ? "■" : "▶";
+  const title = t(playing ? "online.stop" : "online.preview");
+  return `<div class="online-item${playing ? " playing" : ""}" data-i="${i}">
+    <div class="online-meta"><b title="${esc(item.title)}">${esc(item.title)}</b><span class="sub" title="${esc(item.attribution || sub)}">${esc(sub)}</span></div>
+    <span class="num">${item.seconds ? fmtTime(item.seconds) : ""}</span>
+    <button data-act="preview" class="ghost" title="${title}">${icon}</button>
+    <button data-act="import" class="primary">${t("online.import")}</button>
+  </div>`;
+}
+
+function renderOnline() {
+  $("#online-list").innerHTML = online.items.length
+    ? online.items.map(onlineRow).join("")
+    : `<div class="online-empty">${esc(t("online.empty"))}</div>`;
+}
+
+function stopPreview() {
+  if (online.audio) {
+    online.audio.pause();
+    online.audio = null;
+  }
+  online.playing = -1;
+  renderOnline();
+}
+
+function togglePreview(i) {
+  if (online.playing === i) {
+    stopPreview();
+    return;
+  }
+  if (online.audio) online.audio.pause();
+  const audio = new Audio(online.items[i].audioUrl);
+  audio.addEventListener("ended", () => {
+    if (online.playing === i) stopPreview();
+  });
+  audio.addEventListener("error", () => {
+    onlineStatus(t("online.err.preview"), true);
+    if (online.playing === i) stopPreview();
+  });
+  audio.play().catch(() => {
+    onlineStatus(t("online.err.preview"), true);
+    if (online.playing === i) stopPreview();
+  });
+  online.audio = audio;
+  online.playing = i;
+  onlineStatus("");
+  renderOnline();
+}
+
+function openOnline() {
+  $("#view-online").hidden = false;
+  renderOnline();
+  $("#online-query").focus();
+}
+
+function closeOnline() {
+  stopPreview();
+  $("#view-online").hidden = true;
+}
+
+async function runSearch() {
+  const query = $("#online-query").value.trim();
+  if (query.length < 2) return;
+  stopPreview();
+  onlineStatus(t("online.loading"));
+  try {
+    online.items = await api.searchOnline(query);
+    onlineStatus(online.items.length ? "" : t("online.empty"));
+  } catch (err) {
+    online.items = [];
+    onlineStatus(onlineMessage(err), true);
+  }
+  renderOnline();
+}
+
+async function importOnline(btn, item) {
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = t("online.importing");
+  try {
+    const song = await api.importOnline(item);
+    toast(t("online.imported").replace("{title}", song.title), 2600);
+    onlineStatus(t("online.imported").replace("{title}", song.title));
+    await renderLibrary();
+    analysisQueue.kick();
+  } catch (err) {
+    onlineStatus(onlineMessage(err), true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
 }

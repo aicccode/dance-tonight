@@ -19,6 +19,9 @@ export const api = {
   songs: () => call("songs"),
   addSongs: (kind) => call("addSongs", kind),
   addSongPaths: (paths) => call("addSongPaths", paths),
+  // open-licence music: search + download happen in the main process
+  searchOnline: (query) => call("searchOnline", query),
+  importOnline: (item) => call("importOnline", item),
   removeSong: (id) => call("removeSong", id),
   revealSong: (id) => call("revealSong", id),
   songBytes: (id) => call("songBytes", id),

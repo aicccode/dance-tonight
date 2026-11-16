@@ -116,6 +116,7 @@
           </select>
           <button id="btn-add-files" class="primary" data-i18n="lib.addFiles">添加音乐</button>
           <button id="btn-add-folder" data-i18n="lib.addFolder">添加文件夹</button>
+          <button id="btn-add-online" class="ghost" data-i18n="online.title">在线音乐</button>
         </div>
       </header>
       <div class="panel table-panel">
@@ -429,6 +430,23 @@
         <button id="r-retry" data-i18n="result.retry">再来一次</button>
         <button id="r-home" data-i18n="result.home">回首页</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ONLINE MUSIC (open licences) -->
+  <div id="view-online" class="overlay" hidden>
+    <div class="panel online">
+      <header class="online-head">
+        <h2 data-i18n="online.title">在线音乐</h2>
+        <button id="online-close" class="ghost" aria-label="关闭" data-i18n-aria="online.close">✕</button>
+      </header>
+      <form id="online-form" class="online-search">
+        <input id="online-query" type="search" placeholder="搜索风格或曲名，例如 lofi、house、dance" data-i18n-placeholder="online.ph" />
+        <button id="online-go" class="primary" type="submit" data-i18n="online.search">搜索</button>
+      </form>
+      <div id="online-status" class="muted online-status" role="status"></div>
+      <div id="online-list" class="online-list"></div>
+      <p class="hint-line muted" data-i18n="online.hint">结果来自 Openverse 聚合的 CC0 / CC-BY / CC-BY-SA 音频，可免费下载、可商用；请按结果里标注的授权署名原作者。</p>
     </div>
   </div>
 

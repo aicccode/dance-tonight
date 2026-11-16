@@ -1,7 +1,8 @@
 // Electron main process: window, app:// protocol, permissions and IPC.
 import { createHash } from "node:crypto";
-import { existsSync, openSync, readFileSync, readSync, closeSync, readdirSync, statSync } from "node:fs";
+import { existsSync, openSync, readFileSync, readSync, closeSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join, resolve, sep } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { BrowserWindow, app, dialog, ipcMain, protocol, session, shell, systemPreferences } from "electron";
 
@@ -9,6 +10,7 @@ import { Avatars } from "./avatars.js";
 import { Dances, MAX_CLIP_BYTES } from "./dances.js";
 import { DataExporter, CATEGORIES, EXPORT_VERSION } from "./export.js";
 import { MusicLibrary } from "./music.js";
+import * as online from "./onlinemusic.js";
 import { cleanRoutine } from "../web/js/core/choreo_edit.js";
 import { clipMoveDefs } from "../web/js/core/clipmoves.js";
 import { registerClipMoves } from "../web/js/dance/dancemoves.js";
@@ -44,7 +46,9 @@ const CSP_BASE = [
   "default-src 'self' blob: data:",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
-  "media-src 'self' blob: mediastream:",
+  // https: is here for the online-music preview player — audio only, nothing
+  // scriptable, and every download itself still goes through the main process.
+  "media-src 'self' blob: mediastream: https:",
   "connect-src 'self' blob: data:",
   "worker-src 'self' blob:",
 ];
@@ -172,6 +176,28 @@ function registerIpc(win) {
     return addSongFiles(files);
   });
   handle("addSongPaths", (paths) => addSongFiles(paths.filter((p) => typeof p === "string")));
+  // Open-licence music: search happens in the main process (no CORS, no key),
+  // and the file is downloaded, hashed and stored exactly like a local import.
+  handle("searchOnline", (query) => online.search(query, { limit: 24 }));
+  handle("importOnline", async (item) => {
+    if (!item || typeof item !== "object" || typeof item.audioUrl !== "string") throw new Error("无效的在线音乐条目");
+    const { bytes, ext } = await online.fetchAudio(item);
+    const tmp = join(tmpdir(), `dt-online-${process.pid}-${Date.now()}${ext}`);
+    try {
+      writeFileSync(tmp, bytes);
+      const key = fileKey(tmp);
+      const copy = await music.import(tmp, key);
+      return store.addSong({
+        path: copy,
+        source: item.landing || item.audioUrl,
+        title: online.songTitle(item),
+        size: bytes.length,
+        key,
+      });
+    } finally {
+      rmSync(tmp, { force: true });
+    }
+  });
   handle("removeSong", (id) => {
     const song = store.getSong(id);
     const ok = store.removeSong(id);

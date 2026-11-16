@@ -37,6 +37,8 @@ Compatible con Windows, macOS y Linux. Todo funciona en local, sin servidor, y l
   - Las posiciones de los tiempos coinciden con el modelo PyTorch original con F = 0,995.
   - Si el modelo no carga, pasa automáticamente al algoritmo de ritmo integrado en JS puro.
 
+- **Música en línea**: busca pistas libres de regalías desde la propia biblioteca (Openverse, que agrega Freesound, Jamendo, Wikimedia Commons y más, sin cuenta). Solo se devuelven licencias de uso comercial (CC0 / CC-BY / CC-BY-SA); escucha, importa con un clic y el análisis del ritmo comienza solo.
+
 ## Ejercicios
 
 **Ejercicios de fitness** (por nivel de desbloqueo):

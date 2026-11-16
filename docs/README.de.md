@@ -37,6 +37,8 @@ Unterstützt Windows, macOS und Linux. Läuft komplett lokal, benötigt keinen S
   - Übereinstimmung der Taktzeiten mit dem originalen PyTorch-Modell F = 0,995.
   - Schlägt das Laden des Modells fehl, wechselt die App automatisch zum eingebauten Pure-JS-Beat-Algorithmus.
 
+- **Musik online**: royaltyfreie Titel direkt in der Bibliothek suchen (Openverse, das Freesound, Jamendo, Wikimedia Commons u. a. bündelt — ohne Konto). Nur kommerziell nutzbare Lizenzen (CC0 / CC-BY / CC-BY-SA); anhören, mit einem Klick übernehmen, die Beat-Analyse startet automatisch.
+
 ## Bewegungen
 
 **Fitness-Bewegungen** (nach Freischaltstufe):
