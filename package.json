@@ -14,7 +14,7 @@
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node scripts/check_renderer_boot.mjs && node scripts/check_i18n_keys.mjs && node --test --experimental-test-coverage \"web/tests/*.test.js\" \"electron/tests/*.test.js\"",
+    "test": "node scripts/check_renderer_boot.mjs && node scripts/check_i18n_keys.mjs && node scripts/run_tests.mjs",
     "test:coach": "node e2e/coach_judge.mjs",
     "test:motion": "node e2e/coach_motion.mjs",
     "test:mocap": "node e2e/coach_mocap.mjs && node e2e/mocap_studio.mjs",
