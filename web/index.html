@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="app.windowTitle">Dance Tonight · 100 天</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💃</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    { "imports": {
+        "three": "./vendor/three/build/three.module.js",
+        "three/addons/": "./vendor/three/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
+    <symbol id="i-dance" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="m8 21 3-6-2-3 3-4 3 3h3M11 15l4 2 1 4M9 12l-4 1"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  </svg>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <video id="video" class="cam-src" playsinline muted></video>
+
+  <div class="app">
+    <!-- NAV RAIL -->
+    <aside class="rail">
+      <div class="brand">DANCE<b>TONIGHT</b></div>
+      <nav>
+        <button data-nav="home" class="active" data-i18n="nav.home"><svg><use href="#i-home" /></svg>首页</button>
+        <button data-nav="library" data-i18n="nav.library"><svg><use href="#i-music" /></svg>曲库</button>
+        <button data-nav="practice" data-i18n="nav.practice"><svg><use href="#i-target" /></svg>动作教学</button>
+        <button data-nav="dance" data-i18n="nav.dance"><svg><use href="#i-dance" /></svg>舞蹈</button>
+        <button data-nav="settings" data-i18n="nav.settings"><svg><use href="#i-gear" /></svg>设置</button>
+      </nav>
+      <div class="rail-foot">
+        <div id="analysis-bar" class="analysis-bar" hidden><span id="analysis-text"></span><i><b id="analysis-fill"></b></i></div>
+        <div class="rail-today">
+          <div><span class="muted" data-i18n="home.dayPre">第</span> <b id="rail-day">1</b> <span class="muted" data-i18n="home.daySuf">/ 100 天</span></div>
+          <div class="bar thin"><i id="rail-bar"></i></div>
+          <small id="rail-min" class="muted">今日 0 / 10 分钟</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- HOME -->
+    <main id="view-home" class="view home">
+      <section class="panel today-panel">
+        <div class="today-main">
+          <div class="day"><span id="h-day">1</span><small data-i18n="home.of100">/100 天</small></div>
+          <div>
+            <div class="phase" id="h-phase"></div>
+            <p class="focus" id="h-focus"></p>
+          </div>
+        </div>
+        <div class="today-progress">
+          <div class="kpis">
+            <div><b id="h-streak">0</b><span data-i18n="home.streak">连续天数</span></div>
+            <div><b id="h-kcal">0</b><span data-i18n="home.kcalToday">今日千卡</span></div>
+            <div><b id="h-min">0/10</b><span data-i18n="home.minToday">今日分钟</span></div>
+          </div>
+          <div class="bar"><i id="h-bar"></i></div>
+        </div>
+        <div class="today-actions">
+          <button id="btn-today" class="primary lg" data-i18n="home.startToday">开始今日训练</button>
+          <button id="btn-speed" class="outline lg" data-i18n="home.speed">⚡ 竞速挑战</button>
+        </div>
+      </section>
+
+      <section class="panel plan">
+        <header class="panel-head"><h2 data-i18n="home.plan">100 天计划</h2>
+          <div class="legend">
+            <span><i class="c done"></i><span data-i18n="home.lgDone">完成</span></span><span><i class="c part"></i><span data-i18n="home.lgPart">练了一些</span></span>
+            <span><i class="c rest"></i><span data-i18n="home.lgRest">恢复日</span></span><span><i class="c today"></i><span data-i18n="home.lgToday">今天</span></span>
+          </div>
+        </header>
+        <div id="grid" class="grid"></div>
+      </section>
+
+      <section class="panel body-log">
+        <header class="panel-head"><h2 data-i18n="home.body">身体记录</h2>
+          <form id="body-form" class="inline-form">
+            <input name="weight_kg" type="number" step="0.1" min="20" max="400" placeholder="体重 kg" data-i18n-placeholder="home.weightPh" aria-label="体重 kg" data-i18n-aria="home.weightPh" />
+            <input name="waist_cm" type="number" step="0.5" min="30" max="300" placeholder="腰围 cm" data-i18n-placeholder="home.waistPh" aria-label="腰围 cm" data-i18n-aria="home.waistPh" />
+            <button class="primary" data-i18n="home.log">记录</button>
+          </form>
+        </header>
+        <svg id="body-chart" class="chart"></svg>
+      </section>
+
+      <section class="panel history">
+        <header class="panel-head"><h2 data-i18n="home.recent">最近训练</h2><span class="muted small" id="recent-count"></span></header>
+        <div class="scroll"><table class="dense"><thead><tr><th data-i18n="tbl.song">歌曲</th><th data-i18n="tbl.mode">模式</th><th class="num" data-i18n="tbl.score">得分</th><th class="num" data-i18n="tbl.acc">准确率</th><th class="num" data-i18n="tbl.date">日期</th></tr></thead><tbody id="recent-rows"></tbody></table></div>
+      </section>
+
+      <section class="panel totals-panel">
+        <header class="panel-head"><h2 data-i18n="home.totals">累计</h2></header>
+        <div class="kpis" id="totals"></div>
+      </section>
+    </main>
+
+    <!-- LIBRARY -->
+    <main id="view-library" class="view library" hidden>
+      <header class="view-head">
+        <h1><span data-i18n="lib.title">曲库</span> <small id="song-count" class="muted"></small></h1>
+        <div class="tools">
+          <input id="song-filter" type="search" placeholder="搜索歌名…" data-i18n-placeholder="lib.searchPh" />
+          <select id="song-sort" aria-label="排序" data-i18n-aria="lib.sortAria">
+            <option value="title" data-i18n="lib.sortTitle">按歌名</option>
+            <option value="tempo-desc" data-i18n="lib.sortFast">按速度（快→慢）</option>
+            <option value="tempo" data-i18n="lib.sortSlow">按速度（慢→快）</option>
+            <option value="recent" data-i18n="lib.sortRecent">最近添加</option>
+          </select>
+          <button id="btn-add-files" class="primary" data-i18n="lib.addFiles">添加音乐</button>
+          <button id="btn-add-folder" data-i18n="lib.addFolder">添加文件夹</button>
+        </div>
+      </header>
+      <div class="panel table-panel">
+        <div class="scroll">
+          <table class="songs dense">
+            <thead><tr><th>歌曲</th><th class="num">BPM</th><th class="num" data-i18n="tbl.duration">时长</th><th class="num" data-i18n="tbl.best">最佳</th><th class="num" data-i18n="tbl.bestSpeed">竞速最佳</th><th></th></tr></thead>
+            <tbody id="song-rows"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="hint-line muted" data-i18n="lib.hint">把音乐文件或文件夹拖进窗口即可添加 · 会复制一份到软件数据目录，并在后台用 Beat This! 分析节拍（每首约 10 秒）</p>
+      <div id="drop" class="drop-overlay" hidden><div data-i18n="lib.drop">松开鼠标添加音乐</div></div>
+    </main>
+
+    <!-- PRACTICE -->
+    <main id="view-practice" class="view split" hidden>
+      <aside class="panel list-pane">
+        <header class="panel-head"><h2 data-i18n="practice.title">动作教学</h2></header>
+        <div id="move-picker" class="scroll item-list"></div>
+      </aside>
+      <section class="detail-pane">
+        <header class="detail-head">
+          <h1 id="p-name" data-i18n="practice.pick">选择左侧的动作</h1>
+          <div class="reps"><span data-i18n="practice.reps">次数</span> <b id="p-reps">0</b></div>
+        </header>
+        <div class="stage-row">
+          <div class="stage">
+            <canvas id="practice-canvas"></canvas>
+            <div class="stage-hud">
+              <div id="p-tip"></div>
+              <div class="meter"><i id="p-meter"></i></div>
+            </div>
+          </div>
+          <div class="coach-slot" id="practice-coach"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- DANCE -->
+    <main id="view-dance" class="view split" hidden>
+      <aside class="panel list-pane">
+        <header class="panel-head"><h2 data-i18n="dance.title">舞蹈</h2>
+          <div class="tabs" id="dance-tabs">
+            <button data-tab="all" class="active" data-i18n="dance.tabAll">全部</button>
+            <button data-tab="routine" data-i18n="dance.tabRoutine">编舞</button>
+            <button data-tab="clip" data-i18n="dance.tabClip">动捕</button>
+            <button data-tab="user" data-i18n="dance.tabUser">我的</button>
+          </div>
+        </header>
+        <div id="dance-list" class="scroll item-list"></div>
+        <footer class="list-foot">
+          <div class="row">
+            <button id="btn-import-motion" class="grow" data-i18n="dance.importMotion">导入动捕文件（可多选）</button>
+            <select id="motion-style" aria-label="导入分类" data-i18n-aria="dance.styleAria"><option value="现代舞" data-i18n="style.0">现代舞</option><option value="爵士" selected data-i18n="style.1">爵士</option><option value="街舞" data-i18n="style.2">街舞</option><option value="韩舞" data-i18n="style.3">韩舞</option><option value="其他" data-i18n="style.4">其他</option></select>
+          </div>
+          <small class="muted"><span data-i18n="dance.mixamoHint">支持 Mixamo FBX、BVH、VRMA。在</span> <a href="#" id="mixamo-link">Mixamo</a> <span data-i18n="dance.mixamoHint2">下载时选 FBX Binary + Without Skin</span></small>
+        </footer>
+      </aside>
+
+      <section class="detail-pane">
+        <!-- routine overview -->
+        <div id="routine-detail" class="pane-body" hidden>
+          <header class="detail-head">
+            <div><h1 id="rd-title"></h1><p id="rd-meta" class="muted"></p></div>
+            <div class="row">
+              <button id="rd-practice" class="primary" data-i18n="dance.segPractice">分段练习</button>
+              <button id="rd-perform" data-i18n="dance.perform">选歌完整表演 ▶</button>
+              <button id="rd-edit" hidden data-i18n="dance.edit">✎ 编辑</button>
+              <button id="rd-fork" class="ghost" hidden data-i18n="dance.fork">复制改编</button>
+              <button id="rd-delete" class="ghost danger" hidden data-i18n="dance.delete">删除</button>
+            </div>
+          </header>
+          <div class="routine-body">
+            <div class="routine-left">
+              <div id="rd-segments" class="seg-cards"></div>
+              <p class="muted hint-line" data-i18n="dance.rdHint">每段 8 拍。点段落卡片可以单独预览；分段练习时教练按正常速度示范、语音报动作（可以切换到 0.5×/0.75× 慢练），练熟后选一首歌完整表演，摄像头实时打分。</p>
+            </div>
+            <div class="coach-slot" id="routine-coach"><div class="slot-caption" id="rd-preview">预览：整套</div></div>
+          </div>
+        </div>
+
+        <!-- choreography editor -->
+        <div id="routine-editor" class="pane-body" hidden>
+          <header class="editor-head">
+            <input id="ed-name" maxlength="20" placeholder="编舞名称" data-i18n-placeholder="dance.namePh" aria-label="编舞名称" data-i18n-aria="dance.namePh" />
+            <input id="ed-desc" class="grow" maxlength="80" placeholder="一句话描述（可选）" data-i18n-placeholder="dance.descPh" aria-label="描述" data-i18n-aria="dance.descAria" />
+            <label class="bpm" title="适合的歌曲速度，表演时按这个范围推荐歌曲" data-i18n-title="dance.bpmTitle">BPM
+              <input id="ed-bpm-lo" type="number" min="50" max="220" aria-label="最低 BPM" data-i18n-aria="dance.bpmLoAria" />–<input id="ed-bpm-hi" type="number" min="50" max="220" aria-label="最高 BPM" data-i18n-aria="dance.bpmHiAria" />
+            </label>
+            <span id="ed-status" class="muted small"></span>
+            <button id="ed-cancel" class="ghost" data-i18n="dance.cancel">取消</button>
+            <button id="ed-save" class="primary" data-i18n="dance.save">保存</button>
+          </header>
+          <div class="editor-body">
+            <div class="editor-main">
+              <p class="muted small" data-i18n="dance.edHint">把右侧的动作拖进下面的序列（拖到两个动作之间就插在那里），或者直接点动作，会加在选中动作的后面。拖动序列里的动作可以调整顺序，选中后按 Delete 删除。跳的时候从第一个动作一直跳到最后一个。</p>
+              <div class="seq-tools">
+                <span id="ed-summary" class="muted small"></span>
+                <button id="ed-mirror" title="所有左右动作互换" data-i18n-title="dance.mirrorTitle"><span data-i18n="dance.mirror">⇋ 左右镜像</span></button>
+                <button id="ed-clear" class="ghost danger" data-i18n="dance.clear">清空</button>
+              </div>
+              <div id="ed-seq" class="scroll seq"></div>
+            </div>
+            <aside class="editor-side">
+              <div class="palette-wrap">
+                <input id="ed-search" type="search" placeholder="搜索动作 / 动捕片段…" data-i18n-placeholder="dance.searchPh" aria-label="搜索动作" data-i18n-aria="dance.searchAria" />
+                <div id="ed-palette" class="scroll palette"></div>
+              </div>
+              <div class="coach-slot" id="editor-coach"><div class="slot-caption" id="ed-preview-cap">预览</div></div>
+              <span class="btn-group" id="ed-preview-mode"><button data-mode="all" class="active" data-i18n="dance.previewAll">预览整套</button><button data-mode="sel" data-i18n="dance.previewSel">从选中动作开始</button></span>
+            </aside>
+          </div>
+        </div>
+
+        <!-- routine segment practice -->
+        <div id="dance-practice" class="pane-body" hidden>
+          <header class="detail-head">
+            <h1 id="dp-title"></h1>
+            <div class="row">
+              <span class="btn-group" id="dp-speed" title="练习速度（1× = 这套舞的正常速度）" data-i18n-title="dance.speedTitle"><button data-speed="0.5">0.5×</button><button data-speed="0.75">0.75×</button><button data-speed="1" class="active">1×</button></span>
+              <button id="dp-prev" data-i18n="dance.prev">← 上一段</button>
+              <button id="dp-next" class="primary">学会了，下一段 →</button>
+              <button id="dp-perform" data-i18n="dance.performAll">完整表演 ▶</button>
+              <button id="dp-quit" class="ghost" data-i18n="dance.quit">结束练习</button>
+            </div>
+          </header>
+          <div id="dp-segs" class="seg-strip"></div>
+          <div class="stage-row">
+            <div class="stage">
+              <canvas id="dance-canvas"></canvas>
+              <div class="stage-hud">
+                <div id="dp-tip"></div>
+                <div class="meter"><i id="dp-meter"></i></div>
+              </div>
+              <div class="stage-badge"><span data-i18n="dance.followed">已跟跳</span> <b id="dp-loops">0</b> <span data-i18n="dance.loops">轮</span></div>
+            </div>
+            <div class="coach-slot" id="dance-coach"></div>
+          </div>
+        </div>
+
+        <!-- motion-capture studio -->
+        <div id="studio" class="pane-body studio" hidden>
+          <header class="detail-head">
+            <div><h1 id="st-title"></h1><p id="st-credit" class="muted"></p></div>
+            <span id="st-avatar" class="muted small"></span>
+          </header>
+          <div class="studio-stage">
+            <div class="studio-coach"><canvas id="studio-canvas"></canvas><div class="studio-hint" data-i18n="studio.hint">拖动画面转视角 · 空格暂停 · ←/→ 切换小节</div></div>
+            <div class="studio-me" id="st-me" hidden><video id="st-video" playsinline muted></video></div>
+          </div>
+          <div class="studio-timeline">
+            <button id="st-play" class="primary icon-btn" title="播放/暂停（空格）" data-i18n-title="studio.playPause"></button>
+            <input type="range" id="st-seek" min="0" max="1000" value="0" aria-label="进度" data-i18n-aria="studio.progress" />
+            <span id="st-time"></span>
+          </div>
+          <div class="studio-bar">
+            <div id="st-sections" class="seg-strip"></div>
+            <span class="btn-group" id="st-speed"><button data-speed="0.25">0.25×</button><button data-speed="0.5">0.5×</button><button data-speed="0.75">0.75×</button><button data-speed="1">1×</button></span>
+            <span class="btn-group" id="st-view"><button data-view="front" data-i18n="studio.front">正面</button><button data-view="side" data-i18n="studio.side">侧面</button><button data-view="back" data-i18n="studio.back">背面</button></span>
+          </div>
+          <div class="studio-bar toggles">
+            <label class="toggle"><input type="checkbox" id="st-loop" checked /><span data-i18n="studio.loop">循环本节</span></label>
+            <label class="toggle"><input type="checkbox" id="st-mirror" checked /><span data-i18n="studio.mirror">镜面跟跳</span></label>
+            <label class="toggle"><input type="checkbox" id="st-inplace" checked /><span data-i18n="studio.inplace">原地（去掉走位）</span></label>
+            <label class="toggle"><input type="checkbox" id="st-cam" /><span data-i18n="studio.cam">摄像头对照</span></label>
+          </div>
+        </div>
+
+        <div id="dance-empty" class="pane-body empty-state">
+          <p data-i18n="studio.empty">在左侧选择一套编舞或一段动捕舞蹈</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- SETTINGS: two-level menu (category nav + one panel at a time) -->
+    <main id="view-settings" class="view settings-view" hidden>
+      <div class="settings-shell">
+        <nav id="settings-nav" class="settings-nav">
+          <button data-set="general" class="active"><span data-i18n="set.general">通用</span></button>
+          <button data-set="voice"><span data-i18n="set.voice">语音教练</span></button>
+          <button data-set="avatar"><span data-i18n="set.avatar">教练形象</span></button>
+          <button data-set="game"><span data-i18n="set.game">游戏与训练</span></button>
+          <button data-set="data"><span data-i18n="set.data">计划与数据</span></button>
+        </nav>
+        <div class="settings-body scroll">
+
+          <section class="panel" data-panel="general">
+            <header class="panel-head"><h2 data-i18n="set.general">通用</h2></header>
+            <div class="form-grid">
+              <label class="field"><span data-i18n="set.lang">界面语言</span>
+                <small class="muted" data-i18n="set.lang.hint">切换后界面与语音立即更新</small>
+                <select id="opt-lang" name="lang"></select>
+              </label>
+              <label class="field"><span data-i18n="set.camera">摄像头</span>
+                <small class="muted" data-i18n="set.camera.hint">多个摄像头（外接/虚拟）时可选择</small>
+                <select name="camera" id="opt-camera"><option value="" data-i18n="set.camera.default">默认</option></select>
+              </label>
+              <label class="toggle"><input id="opt-skeleton" type="checkbox" /><span data-i18n="set.skeleton">显示骨架</span></label>
+            </div>
+            <small class="muted" data-i18n="set.autoSave">所有修改立即生效，不需要手动保存</small>
+          </section>
+
+          <section class="panel" data-panel="voice" hidden>
+            <header class="panel-head"><h2 data-i18n="set.voice">语音教练</h2></header>
+            <div class="field"><span data-i18n="set.voice.actor">发音人</span><div id="voice-list" class="choice-list"></div></div>
+            <label class="toggle"><input id="opt-voice" type="checkbox" /><span data-i18n="set.voice.cue">训练时语音提示动作</span></label>
+            <label class="toggle"><input id="opt-eyes" type="checkbox" /><span data-i18n="set.voice.blind">盲练模式：每个动作都报左右 + 节拍提示音</span></label>
+            <div class="field">
+              <span data-i18n="set.voice.cues">台词与语音</span>
+              <small class="muted" data-i18n="set.voice.hint">每句都可试听；点「上传」用自己的录音替换内置语音（已替换的会标记出来）。</small>
+              <input id="voice-file" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.flac" hidden />
+              <div id="cue-list" class="cue-list"></div>
+              <span class="row">
+                <button id="btn-voice-reset" class="ghost" data-i18n="set.voice.restore">恢复内置语音</button>
+              </span>
+            </div>
+          </section>
+
+          <section class="panel" data-panel="avatar" hidden>
+            <header class="panel-head"><h2 data-i18n="set.avatar">教练形象</h2>
+              <div class="row"><button id="btn-import-avatar" data-i18n="set.avatar.import">导入 VRM</button><button id="btn-reset-coach" class="ghost" data-i18n="set.avatar.resetPos">浮窗复位</button></div>
+            </header>
+            <div class="avatar-body">
+              <div id="avatar-list" class="choice-list"></div>
+              <div class="coach-slot" id="settings-coach"></div>
+            </div>
+            <small class="muted" data-i18n="set.avatar.hint">VRM 可以用 VRoid Studio 免费制作，或从 VRoid Hub / BOOTH 下载（注意模型的使用条款）。游戏中教练浮窗可拖动标题栏移动、拖右下角缩放。</small>
+          </section>
+
+          <section class="panel" data-panel="game" hidden>
+            <header class="panel-head"><h2 data-i18n="set.game">游戏与训练</h2></header>
+            <div class="form-grid">
+              <label class="field"><span data-i18n="set.game.latency">音画延迟补偿 (ms)</span>
+                <input id="opt-latency" type="number" step="10" min="-500" max="500" />
+                <small class="muted" data-i18n="set.game.latencyHint">判定总偏早/偏晚时调整，蓝牙耳机通常 150~250</small>
+              </label>
+              <label class="toggle"><input id="opt-speed-ramp" type="checkbox" /><span data-i18n="set.speedRamp">竞速模式逐渐加速（最快 +12%）</span></label>
+              <label class="toggle"><input id="opt-coach" type="checkbox" /><span data-i18n="set.avatar.show">训练时显示教练</span></label>
+            </div>
+            <small class="muted" data-i18n="set.autoSave">所有修改立即生效，不需要手动保存</small>
+          </section>
+
+          <section class="panel" data-panel="data" hidden>
+            <header class="panel-head"><h2 data-i18n="set.data">计划与数据</h2></header>
+            <form id="restart-form" class="row">
+              <label class="field grow"><span data-i18n="set.plan.start">100 天计划开始日期</span> <input name="start_date" type="date" /></label>
+              <button data-i18n="set.plan.change">修改</button>
+            </form>
+            <div class="row">
+              <button id="btn-import-legacy" data-i18n="set.plan.legacy">导入旧版（服务器版）数据</button>
+              <button id="btn-import-analysis" data-i18n="set.plan.analysis">导入节拍分析包</button>
+            </div>
+            <header class="panel-head sub"><h2 data-i18n="set.exp.title">导出 / 导入数据包</h2>
+              <small class="muted" data-i18n="set.exp.hint">.dtx 文件：分项勾选 + gzip 压缩 + SM9 加密（密钥仅由口令派生，不经过任何服务器）</small>
+            </header>
+            <form id="export-form" class="form-grid">
+              <label class="field"><span data-i18n="exp.pass">加密口令</span><small class="muted" data-i18n="exp.pass.hint">至少 8 位；分享给别人时只需告诉对方口令</small>
+                <input id="exp-pass" type="password" autocomplete="off" placeholder="至少 8 位" data-i18n-placeholder="exp.pass.placeholder" />
+              </label>
+              <div class="field"><span data-i18n="exp.cats">包含的数据</span><div id="exp-cats" class="choice-list"></div></div>
+              <div class="row">
+                <button type="button" id="btn-export" class="primary" data-i18n="exp.export">导出到文件…</button>
+                <button type="button" id="btn-import-dtx" data-i18n="exp.import">从文件导入…</button>
+              </div>
+              <small id="exp-status" class="muted"></small>
+            </form>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- GAME -->
+  <div id="view-game" class="game" hidden>
+    <audio id="audio" preload="auto"></audio>
+    <canvas id="game-canvas"></canvas>
+    <div class="hud">
+      <div class="hud-top">
+        <div><span class="muted" id="g-title"></span></div>
+        <div class="score"><b id="g-score">0</b><span id="g-acc">--</span></div>
+      </div>
+      <div class="progress"><i id="g-progress"></i></div>
+      <div id="g-hp" class="hp" hidden><i id="g-hp-fill"></i><span>HP</span></div>
+      <div id="g-combo" class="combo"></div>
+      <div class="hud-bottom">
+        <div id="g-hint" class="hint"></div>
+        <div class="next"><span class="muted" data-i18n="game.next">接下来</span><div id="g-next"></div></div>
+      </div>
+    </div>
+    <div id="loading" class="loading" hidden></div>
+  </div>
+
+  <!-- COACH (floating in game, docked into .coach-slot elsewhere) -->
+  <div id="coach-panel" class="coach-panel" hidden>
+    <div class="coach-head"><span data-i18n="coach.title">教练</span><span class="coach-credit muted"></span><button class="coach-hide" title="隐藏" data-i18n-title="coach.hide">×</button></div>
+    <canvas></canvas>
+  </div>
+
+  <!-- RESULT -->
+  <div id="view-result" class="overlay" hidden>
+    <div class="panel result">
+      <h2 id="r-title"></h2>
+      <div class="big-score" id="r-score"></div>
+      <div id="r-best" class="badge-line"></div>
+      <div class="kpis" id="r-stats"></div>
+      <ol id="r-board" class="board" hidden></ol>
+      <div class="row center">
+        <button id="r-next" class="primary" data-i18n="result.next">下一首 ▶</button>
+        <button id="r-retry" data-i18n="result.retry">再来一次</button>
+        <button id="r-home" data-i18n="result.home">回首页</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

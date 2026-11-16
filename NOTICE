@@ -1,0 +1,52 @@
+Dance Tonight
+Copyright 2026 Dance Tonight contributors
+
+This product includes software and assets from third parties:
+
+1. smx (SM2/SM3/SM4/SM9 Chinese national cryptography library)
+   - Path: vendor/smx/
+   - License: Apache License 2.0 (see vendor/smx/LICENSE)
+   - Source: https://github.com/aicccode/smx
+
+2. Beat This! beat-tracking model
+   - File: assets/models/beat_this_final0.int8.onnx
+   - Paper: "Beat this! Accurate beat tracking without DBN postprocessing"
+   - License: MIT (model weights and code)
+   - Source: https://github.com/LPML-MIT/beat-this
+
+3. Bundled VRM coach avatars (see assets/avatars/)
+   - SportGirl.vrm — author: aicccode
+   - RealMaster.vrm — author: unknown; the VRM metadata marks this model
+     as credit-required and non-commercial. If you redistribute this
+     repository or use it commercially, verify the original model license
+     first, or remove this file. VRM avatars for personal use can be
+     downloaded from https://hub.vroid.com/
+
+4. MediaPipe pose_landmarker_lite.task (pose detection)
+   - NOT bundled; downloaded at install time from Google Storage by
+     scripts/vendor.mjs
+   - License: Apache License 2.0
+   - Source: https://developers.google.com/mediapipe
+
+5. Browser libraries vendored into web/vendor/ at install time
+   (three.js, @pixiv/three-vrm, @mediapipe/tasks-vision, onnxruntime-web,
+   fflate) keep their original licenses; see the respective packages in
+   node_modules for details.
+
+6. assets/dances/*.json — motion clips baked from Mixamo-style motion
+   sources; additional motion capture files can be downloaded from
+   https://www.mixamo.com/ (the app links to it) and imported as
+   FBX / BVH / VRMA.
+
+7. samples/demo-song.mp3 — demo track for the minimal verification flow.
+   Replace it with your own music; end users import their own songs.
+
+All other code in this repository is released under the Apache License 2.0.
+
+7. Bundled non-Chinese voice packs (assets/tts/edge@*/)
+   - Generated with Microsoft Edge TTS neural voices (one voice per
+     language: en/es/ru/ja/ko/fr/de/pt/ar) via scripts/gen_voices_edge.py
+   - Edge TTS is an unofficial free endpoint; if you redistribute this
+     repository, review whether this usage is acceptable for you, or
+     delete those directories and let the app fall back to the browser's
+     speech synthesis for those languages

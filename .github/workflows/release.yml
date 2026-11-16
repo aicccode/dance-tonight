@@ -1,0 +1,93 @@
+name: Release
+
+# Pushing a tag like v1.0.0 builds the app on all three platforms and publishes
+# a GitHub Release with the installers attached.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to build and publish (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux
+          - os: windows-latest
+            target: win
+          - os: macos-latest
+            target: mac
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # postinstall copies node_modules into web/vendor and fetches the pose model
+      - name: Install
+        run: npm ci
+
+      - name: Static checks
+        run: |
+          node scripts/check_renderer_boot.mjs
+          node scripts/check_i18n_keys.mjs
+
+      - name: Build ${{ matrix.target }}
+        run: npm run dist:${{ matrix.target }} -- --publish never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # keep the macOS bundle unsigned: the project has no signing identity
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}-installers
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            dist/*.AppImage
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
+            dist/*.blockmap
+            dist/latest*.yml
+
+  publish:
+    name: publish release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: List files
+        run: find artifacts -type f -printf "%s\t%p\n" | sort -k2
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          name: Dance Tonight ${{ inputs.tag || github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: false
+          files: artifacts/**/*

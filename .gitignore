@@ -1,0 +1,34 @@
+node_modules/
+dist/
+web/vendor/
+.env
+*.part
+# large / licensed assets: only the minimal-verification pack below is tracked
+assets/*
+!assets/avatars/
+assets/avatars/*
+!assets/avatars/RealMaster.vrm
+!assets/avatars/SportGirl.vrm
+!assets/dances/
+assets/dances/*
+!assets/dances/*.json
+!assets/models/
+assets/models/*
+!assets/models/beat_this_final0.int8.onnx
+!assets/tts/
+assets/tts/*
+# bundled offline cue packs: zh (CosyVoice) + nine languages (Edge neural)
+!assets/tts/edge@*/
+!assets/tts/longhua_v3.1@zh/
+# personal copies of avatars in the project root
+/*.vrm
+__pycache__/
+.pytest_cache/
+.coverage
+exports/
+# WorkBuddy app/session data — never publish
+.wbapp_*.genie
+.workbuddy/
+
+# electron installer artifact; project uses npm (package-lock.json)
+yarn.lock

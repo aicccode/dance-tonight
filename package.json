@@ -1,0 +1,94 @@
+{
+  "name": "dance-tonight",
+  "productName": "Dance Tonight",
+  "version": "1.0.0",
+  "description": "100天腹肌燃脂舞蹈训练",
+  "author": "aicccode <gooqle.com.hk@gmail.com>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aicccode/dance-tonight.git"
+  },
+  "private": true,
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node scripts/check_renderer_boot.mjs && node scripts/check_i18n_keys.mjs && node --test --experimental-test-coverage \"web/tests/*.test.js\" \"electron/tests/*.test.js\"",
+    "test:coach": "node e2e/coach_judge.mjs",
+    "test:motion": "node e2e/coach_motion.mjs",
+    "test:mocap": "node e2e/coach_mocap.mjs && node e2e/mocap_studio.mjs",
+    "test:choreo": "node e2e/choreo_editor.mjs",
+    "e2e": "node e2e/smoke.mjs && node e2e/coach_judge.mjs && node e2e/coach_motion.mjs && node e2e/coach_mocap.mjs && node e2e/mocap_studio.mjs && node e2e/choreo_editor.mjs",
+    "dist": "electron-builder",
+    "dist:linux": "electron-builder --linux",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "postinstall": "node scripts/vendor.mjs",
+    "dist:win-cross": "electron-builder --win zip -c.win.signAndEditExecutable=false"
+  },
+  "devDependencies": {
+    "@mediapipe/tasks-vision": "^0.10.14",
+    "@pixiv/three-vrm": "^3.5.5",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "fflate": "^0.8.3",
+    "onnxruntime-web": "^1.31.1",
+    "playwright-core": "^1.65.0",
+    "three": "^0.187.0"
+  },
+  "build": {
+    "appId": "com.fabian.dancetonight",
+    "productName": "Dance Tonight",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "package.json",
+      "electron/**/*",
+      "!electron/tests/**",
+      "web/**/*",
+      "!web/tests/**",
+      "assets/**/*",
+      "vendor/**/*"
+    ],
+    "asar": true,
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game",
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Dance Tonight"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.healthcare-fitness",
+      "icon": "build/icon.png",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "extendInfo": {
+        "NSCameraUsageDescription": "Dance Tonight 用摄像头识别你的动作并打分，画面只在本机处理，不会上传。"
+      }
+    }
+  }
+}

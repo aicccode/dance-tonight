@@ -1,0 +1,444 @@
+# SMX - 国密算法多语言实现
+
+中文 | [English](README.en-US.md) | [Español](README.es-ES.md)
+
+完全基于国家密码管理局发布的商用密码算法标准，在**零第三方依赖**的前提下，实现 SM2、SM3、SM4、SM9 国密核心算法在 **Java、JavaScript、Swift、Rust、Go、C、C#、Python、Dart** 九种主流编程语言下的全维度落地。
+
+所有实现均严格遵循国家密码管理局发布的算法规范与测试用例，算法输出与官方测试基准完全一致，可直接应用于商用密码产品的研发与部署。
+
+## 为什么选择 SMX
+
+与 OpenSSL、BouncyCastle 相比：
+
+- **更快：** 在 Apple M2 上，SM2 签名 Rust 只需 31.6 µs、Go 32.7 µs、Swift 39.2 µs，而 OpenSSL 3.6.5 需要 55.0 µs，BouncyCastle 需要 603 µs。SM4 解密 1 MiB，Rust 达到 839 MB/s，OpenSSL 为 141 MB/s。Java 版与同为 Java 的 BouncyCastle 相比，签名快 7.5 倍，密钥交换快 13 倍，SM4 加密快 1.6 倍、解密快 2 倍。详见下文“性能”，其中绿色加粗的数值都比 OpenSSL 和 BouncyCastle 快。
+- **完整的 SM2 密钥交换：** OpenSSL 3.x 没有提供 GB/T 32918.3 的 SM2 密钥交换接口；本库九种语言都提供，并包含确认值校验。
+- **完整的 SM9 标识密码：** 签名验签、密钥交换、密钥封装、公钥加密（基于 KDF 的序列密码和 SM4 分组密码两种方式）以及主密钥和用户密钥的生成，九种语言全部提供，并且都能逐字节复现 GB/T 38635.5 附录 A 到 D 的全部示例。OpenSSL 3.x 不提供 SM9。
+- **九种语言，同一套行为：** 接口语义和输出格式一致，经过互通测试，可以直接跨语言通信，例如 JavaScript 前端与 Java 后端协商密钥后用 SM4 加密通信。各语言实现也与 OpenSSL、BouncyCastle 双向互通。
+- **零依赖：** 不需要安装 OpenSSL 本地库，也不需要引入 BouncyCastle 的 jar 包。JavaScript 和 Python 是纯源码实现，可以在浏览器等无法加载本地库的环境中使用。
+- **更严格地遵循国标：** 按 GB/T 32918.4 的要求，拒绝 KDF 输出全为零的 SM2 密文；OpenSSL 3.0 和 BouncyCastle 1.86 不做这项检查。
+- **可选的高安全版：** `security` 分支提供常数时间的 SM4，适合客户端等与不受信任的代码共用 CPU 的环境。在 Apple M2 上，OpenSSL 3.6.5 的 SM4 只有查表实现，BouncyCastle 的 SM4 同样是查表实现。
+
+## 版本选择：高性能版与高安全版
+
+本仓库提供两个分支，**算法、接口和输出完全相同，可以互相通信、互相解密**，区别只在 SM4 的内部实现：
+
+| 分支 | SM4 实现 | 适用场景 |
+|---|---|---|
+| `main`（高性能版，默认） | 查表实现，与 OpenSSL、BouncyCastle 的做法相同，速度最快 | 服务端，以及其他不会有不受信任的代码与你共用同一颗 CPU 的环境 |
+| `security`（高安全版） | 常数时间实现，不做依赖密钥的查表，SM4 较慢 | 客户端（App、桌面程序、浏览器），以及与其他租户共享物理 CPU 的云主机 |
+
+除 SM4 外，两个分支的代码完全一样：SM2 的常数时间实现、安全的随机数、严格的输入校验等安全措施在两个分支中都有。
+
+**高性能版并不等于不安全。** 查表实现面临的是“缓存计时攻击”：攻击者无法直接读取你的内存，而是要在**同一台机器、同一颗 CPU** 上运行自己的程序，通过测量自己访问内存的快慢，推断加密时查了表中的哪些位置，进而推算密钥。因此：
+
+- **自己控制的服务器上**，只运行你自己的服务，攻击者没有机会在同一颗 CPU 上运行代码，这种攻击基本无从下手。通过网络远程测量时间理论上可行，但需要海量的精确测量，实际中极难做到。OpenSSL 在 ARM 等平台上的 SM4 也是查表实现，被广泛用于服务端。
+- **客户端上**，同一台设备可能同时运行着不受信任的 App 或网页脚本，它们与你的加密代码共用 CPU 缓存，风险明显更高。
+- **共享物理 CPU 的云主机上**，同一宿主机上的其他租户理论上也能发起这种攻击。使用独占物理核或专用主机可以避免。
+
+还要说明一点：如果攻击者已经能够直接读取你的进程内存，那么密钥本身就暴露了，两个版本都无法防御，这不是选择哪个分支能解决的问题。
+
+获取高安全版：
+
+```bash
+git clone -b security https://github.com/aicccode/smx.git
+```
+
+## 功能矩阵
+
+| 功能 | Java | JavaScript | Swift | Rust | Go | C | C# | Python | Dart |
+|------|:----:|:----------:|:-----:|:----:|:--:|:-:|:--:|:------:|:----:|
+| SM3 哈希 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM4 对称加解密 (CBC/PKCS7) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM2 非对称加解密 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM2 数字签名/验签 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM2 密钥交换 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM9 主密钥/用户密钥生成 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM9 数字签名/验签 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM9 密钥交换 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM9 密钥封装 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SM9 公钥加密（序列密码 / SM4） | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## 项目结构
+
+```
+smx/
+├── java/            # Java 实现 (Maven, site.aicc:gm-java)
+├── javascript/      # JavaScript 实现 (npm, ES Module)
+├── swift/           # Swift 实现 (SwiftPM, GMSwift)
+├── rust/            # Rust 实现 (Cargo, gm-rust)
+├── go/              # Go 实现 (Go Module, smx)
+├── c/               # C 实现 (Makefile, C99)
+├── csharp/          # C# 实现 (.NET 8, SMX)
+├── python/          # Python 实现 (pyproject, gm-python)
+├── dart/            # Dart 实现 (pub, smx)
+├── testvectors/     # 各语言共用的测试向量，以及 SM9 的独立参考实现和接口规范
+├── demo/            # 跨语言密钥交换与加密通信Demo
+│   ├── server-java/     # Java HTTP 服务端 (B侧)
+│   ├── client-js/       # JavaScript 客户端 (A侧)
+│   ├── client-rust/     # Rust 客户端 (A侧)
+│   ├── client-swift/    # Swift 客户端 (A侧)
+│   ├── client-go/       # Go 客户端 (A侧)
+│   ├── client-c/        # C 客户端 (A侧, libcurl)
+│   ├── client-csharp/   # C# 客户端 (A侧, .NET 8)
+│   ├── client-python/   # Python 客户端 (A侧)
+│   ├── client-dart/     # Dart 客户端 (A侧)
+│   └── run-tests.sh     # 一键测试脚本
+└── doc/             # 算法规范文档 (PDF)
+```
+
+## 各语言实现
+
+### Java
+
+```bash
+cd java
+mvn test        # 运行测试
+mvn install     # 安装到本地仓库
+```
+
+- **构建工具：** Maven
+- **包名：** `site.aicc` (`gm-java:1.0.0`)
+- **最低版本：** Java 8+
+- **依赖：** 无（仅 JUnit 用于测试）
+
+### JavaScript
+
+```bash
+cd javascript
+npm test        # 运行测试
+```
+
+- **构建工具：** npm (ES Module)
+- **包名：** `gm-js`
+- **运行环境：** Node.js (ES Module)
+- **依赖：** 无
+
+### Swift
+
+```bash
+cd swift
+swift test      # 运行测试
+swift build     # 编译
+```
+
+- **构建工具：** Swift Package Manager
+- **库名：** `GMSwift`
+- **最低版本：** Swift 5.7+, iOS 15+, macOS 10.13+
+- **依赖：** 无
+
+### Rust
+
+```bash
+cd rust
+cargo test      # 运行测试
+cargo build     # 编译
+```
+
+- **构建工具：** Cargo
+- **包名：** `gm-rust`
+- **最低版本：** Rust 1.85（2024 edition）
+- **依赖：** 无
+
+### Go
+
+```bash
+cd go
+go test ./...   # 运行测试
+```
+
+- **构建工具：** Go Modules
+- **模块名：** `smx`
+- **最低版本：** Go 1.21+
+- **依赖：** 无
+
+### C
+
+```bash
+cd c
+make test       # 编译并运行测试
+```
+
+- **构建工具：** Makefile (gcc)
+- **标准：** C99
+- **依赖：** 无（核心库），libcurl（仅Demo客户端）
+
+### C#
+
+```bash
+cd csharp
+dotnet test     # 运行测试
+dotnet build    # 编译
+```
+
+- **构建工具：** .NET SDK
+- **库名：** `SMX`
+- **最低版本：** .NET 8.0
+- **依赖：** 无（仅 xunit 用于测试）
+
+### Python
+
+```bash
+cd python
+python3 -m unittest discover -s tests -t .   # 运行测试（无需安装任何依赖）
+python3 -m pytest                            # 也可以使用 pytest 运行
+SMX_SLOW_TESTS=1 python3 -m unittest discover -s tests -t .   # 包括 512 MiB/1 GiB 的 SM3 慢测试
+```
+
+- **构建工具：** setuptools (pyproject.toml)
+- **包名：** `gm-python`（导入名 `smx`）
+- **最低版本：** Python 3.9+
+- **依赖：** 无（pytest 可选，仅用于测试）
+
+### Dart
+
+```bash
+cd dart
+dart pub get
+dart test                      # 运行测试
+dart run benchmark/bench.dart  # 性能测试
+```
+
+- **构建工具：** pub (pubspec.yaml)
+- **包名：** `smx`（`import 'package:smx/smx.dart';`）
+- **最低版本：** Dart 3.0+，只支持 Dart VM（JIT、AOT 以及 Flutter 原生平台），不支持编译成 JavaScript
+- **依赖：** 无（仅 test 用于测试）
+
+## SM9 用法
+
+各语言的 SM9 接口语义相同，名称按各语言习惯调整。下面以 Python 为例：
+
+```python
+from smx import (sm9_gen_sign_master_key, sm9_gen_sign_user_key, sm9_sign, sm9_verify,
+                 sm9_gen_enc_master_key, sm9_gen_enc_user_key, sm9_encrypt, sm9_decrypt)
+
+# 密钥生成中心（KGC）
+ks, ppub_s = sm9_gen_sign_master_key()          # 签名主私钥 / 签名主公钥（G2 点）
+ds = sm9_gen_sign_user_key(ks, "Alice")         # Alice 的签名私钥（G1 点）
+
+signature = sm9_sign("消息", ds, ppub_s)         # h || S，小写十六进制
+assert sm9_verify("消息", signature, "Alice", ppub_s)   # 验证方只需要标识和主公钥
+
+ke, ppub_e = sm9_gen_enc_master_key()           # 加密主私钥 / 加密主公钥（G1 点）
+de = sm9_gen_enc_user_key(ke, "Bob")            # Bob 的加密私钥（G2 点）
+c = sm9_encrypt("明文", "Bob", ppub_e)            # C1 || C3 || C2；mode="sm4" 使用 SM4
+assert sm9_decrypt(c, "Bob", de) == "明文".encode()
+```
+
+另有密钥封装（`sm9_encapsulate` / `sm9_decapsulate`）和带确认的密钥交换（`sm9_exchange_init`、`sm9_exchange_respond`、`sm9_exchange_confirm`、`sm9_exchange_check`）。编码格式、默认的 hid（签名 0x01、密钥交换 0x02、加密 0x03）、输入校验规则见 [`testvectors/SM9-SPEC.md`](testvectors/SM9-SPEC.md)。
+
+## 安全说明
+
+### 输入要求
+
+- **SM4 密钥和 IV 必须正好 16 字节**（或 32 位十六进制）。早期版本会把其他长度的“文本密钥”哈希或截断成密钥，实际强度只有约 64 位，现在会直接报错。用这种密钥加密过的旧数据无法用新版本解密，需要用旧版本解密后重新加密。
+- **签名和密文的十六进制必须是小写**，与本库的输出一致，这样一个签名只有一种字符串形式。公钥和私钥的十六进制仍然不区分大小写。
+- 非法输入（不在曲线上的点、超出范围的私钥或签名、长度错误、错误的填充等）一律按各语言的惯例报错或返回失败。每种语言的公开接口都经过模糊测试，没有发现崩溃或卡死，但模糊测试不能证明完全不存在这类问题。
+
+### SM4-CBC 的局限
+
+- **CBC 只提供保密性，不提供完整性。** 密文可以被篡改而不被发现，需要完整性时请另外使用 MAC（例如 HMAC-SM3）并先验证再解密。
+- **同一个 SM4 对象设置一次密钥后，每次加密都使用同一个 IV。** 相同的明文会得到相同的密文。请为每条消息使用新的随机 IV。
+- 字符串形式的解密结果需要做 UTF-8 校验，校验耗时仍与明文内容有关。处理二进制数据或要求更严格的时序时，请使用返回字节的解密接口。
+
+### 侧信道
+
+- SM2 中私钥参与的运算（密钥生成、签名、解密、密钥交换）使用固定窗口和掩码查表，不存在依赖秘密数据的分支或内存地址。C、Rust、Swift 带有检查编译结果的工具，例如 C 的 `make check-ct`、`rust/tools/check_ct_asm.py`、`swift/Tools/check_constant_time.py`；换编译器版本后应重新运行。
+- **SM4 在本分支（`main`）使用查表实现**，速度快，但不抵抗缓存计时攻击，适用场景见上文“版本选择”。`security` 分支的 SM4 不使用依赖秘密数据的查表：有 AES-NI、GFNI 或 ARM AES 指令时使用硬件实现，否则使用布尔电路实现的 S 盒。
+- Java、C#、JavaScript、Python、Dart 运行在托管环境中，运行时本身不提供常数时间保证，本库只能做到源码层面没有依赖秘密数据的分支和查表（指 SM2；`security` 分支的 SM4 也是如此）。
+- 验签只处理公开数据，使用可变时间的算法以提高速度。
+
+### SM9
+
+- 所有点都带 `04` 前缀：G1 点 65 字节，G2 点 129 字节（`04 || x1 || x0 || y1 || y0`，高位分量在前）。密文 `C1 || C3 || C2` 中的 C1 也带 `04`，与本库 SM2 一致；国标示例打印的 C1 没有这个前缀，所以本库密文比示例多 1 字节，其余部分完全相同。
+- SM4 方式按国标示例使用 ECB 模式和 PKCS#7 填充，每条消息的 K1 都由 KDF 重新导出。解密时先在常数时间内校验 C3，再解密和去除填充。
+- **密文中没有记录加密方式**，解密时必须指定与加密时相同的方式。C2 正好 16 字节时，两种方式导出的 K2 相同，用错方式解密会通过 C3 校验并返回 16 字节无意义的数据，而不是报错，但不会泄露明文。这是国标密文格式本身的特点。
+- 主私钥、随机数 r 等秘密数据参与的点乘和 GT 幂运算使用固定窗口和掩码查表；C、Rust、Swift 的常数时间检查工具也覆盖了 SM9 的这些路径。G2 点（主公钥、用户加密私钥）解码时都会检查是否属于 N 阶子群。
+- SM9 的 SM4 方式使用本分支的 SM4，同样不抵抗缓存计时攻击；对时序敏感时请使用默认的序列密码方式，或使用 `security` 分支。
+
+### 需要更换的旧密钥
+
+以下环境用旧版本生成的密钥，其随机数来源不安全，**应当更换**，这些密钥上的旧签名也不应再视为可靠：
+
+- JavaScript 运行在 Node.js 18 及更早版本：随机数完全来自 `Math.random`
+- JavaScript 运行在浏览器或 Node.js 20 及以上：混入了 `Math.random` 和 RC4，风险较低，但仍建议更换
+- Rust 编译到 wasm：随机数来自以时间为种子的线性同余生成器
+
+### 与其他实现的差异
+
+GB/T 32918.4 要求解密时拒绝 KDF 输出全为零的密文，本库照此执行，而 OpenSSL 3.0 和 BouncyCastle 1.86 不检查。对 1 字节明文，这种情况约每 256 次出现一次。
+
+## 性能
+
+### Apple M2：改造前、高安全版与高性能版
+
+2026-11-06 在一台空闲的 Apple M2 Mac 上测得（macOS 14.1.1）。每种实现完整运行 3 轮，每轮每项取 7 个样本的中位数，表中是 3 轮结果的中位数；各实现 3 轮之间差异的中位数在 0% 到 3.7% 之间。按算法分列的完整表格、测试方法、原始数据和复现脚本见 [`compare/apple-m2/`](compare/apple-m2/README.md)。
+
+高性能版（`main`）与 OpenSSL 3.6.5、BouncyCastle 1.86 对比：
+
+绿色加粗表示比 OpenSSL 和 BouncyCastle 都快（领先 2% 以上）。
+
+| 操作 | OpenSSL 3.6.5 | BouncyCastle 1.86 | C | Rust | Go | C# | Java | JavaScript | Python | Swift |
+|---|---|---|---|---|---|---|---|---|---|---|
+| SM3 1 MiB（MB/s） | 354 | 245 | 310 | $\color{green}{\textbf{388}}$ | 323 | $\color{green}{\textbf{371}}$ | 246 | 352 | 0.908 | $\color{green}{\textbf{373}}$ |
+| SM4-CBC 加密 1 MiB（MB/s） | 122 | 69.1 | $\color{green}{\textbf{136}}$ | $\color{green}{\textbf{155}}$ | $\color{green}{\textbf{126}}$ | 107 | 113 | 100 | 2.6 | $\color{green}{\textbf{139}}$ |
+| SM4-CBC 解密 1 MiB（MB/s） | 141 | 71.1 | $\color{green}{\textbf{373}}$ | $\color{green}{\textbf{839}}$ | $\color{green}{\textbf{396}}$ | $\color{green}{\textbf{175}}$ | 141 | 85.9 | 8.2 | 37.7 |
+| SM4 密钥扩展（µs） | 0.35 | 0.19 | $\color{green}{\textbf{0.10}}$ | $\color{green}{\textbf{0.10}}$ | $\color{green}{\textbf{0.14}}$ | $\color{green}{\textbf{0.15}}$ | 0.36 | 0.32 | 13.2 | 0.63 |
+| SM2 密钥生成（µs） | 30.9 | 527 | $\color{green}{\textbf{24.9}}$ | $\color{green}{\textbf{14.5}}$ | $\color{green}{\textbf{13.2}}$ | $\color{green}{\textbf{24.4}}$ | 40.1 | 70.9 | 334 | $\color{green}{\textbf{16.2}}$ |
+| SM2 签名（µs） | 55.0 | 603 | $\color{green}{\textbf{50.0}}$ | $\color{green}{\textbf{31.6}}$ | $\color{green}{\textbf{32.7}}$ | $\color{green}{\textbf{49.9}}$ | 79.9 | 210 | 496 | $\color{green}{\textbf{39.2}}$ |
+| SM2 验签（µs） | 115 | 850 | $\color{green}{\textbf{76.0}}$ | $\color{green}{\textbf{76.6}}$ | $\color{green}{\textbf{55.9}}$ | 123 | 227 | 242 | 709 | $\color{green}{\textbf{55.4}}$ |
+| SM2 加密 32 B（µs） | 113 | 2560 | $\color{green}{\textbf{100}}$ | $\color{green}{\textbf{88.0}}$ | $\color{green}{\textbf{69.0}}$ | 171 | 257 | 342 | 1800 | $\color{green}{\textbf{76.1}}$ |
+| SM2 解密 32 B（µs） | 77.6 | 1991 | 84.1 | $\color{green}{\textbf{72.6}}$ | $\color{green}{\textbf{59.0}}$ | 148 | 220 | 271 | 1628 | $\color{green}{\textbf{61.1}}$ |
+| SM2 密钥交换（µs） | — | 11536 | $\color{green}{\textbf{299}}$ | $\color{green}{\textbf{262}}$ | $\color{green}{\textbf{206}}$ | $\color{green}{\textbf{471}}$ | $\color{green}{\textbf{897}}$ | $\color{green}{\textbf{1019}}$ | $\color{green}{\textbf{6935}}$ | $\color{green}{\textbf{233}}$ |
+
+两个分支只有 SM4 不同。下表每格依次为：改造前 / `security`（高安全版）/ `main`（高性能版）：
+
+| 语言 | 加密 1 MiB（MB/s） | 解密 1 MiB（MB/s） | 密钥扩展（µs） |
+|---|---|---|---|
+| C | 72.7 / 60.4 / **136** | 80.0 / 195 / **373** | 0.14 / 0.34 / **0.10** |
+| Rust | 22.7 / 58.3 / **155** | 67.4 / 839 / **839** | 0.17 / 0.23 / **0.10** |
+| Go | 58.2 / 25.1 / **126** | 59.3 / 113 / **396** | 0.22 / 0.64 / **0.14** |
+| C# | 52.3 / 24.1 / **107** | 42.0 / 23.4 / **175** | 0.23 / 0.65 / **0.15** |
+| Java | 36.8 / 24.1 / **113** | 40.4 / 23.1 / **141** | 0.58 / 0.97 / **0.36** |
+| JavaScript | 12.2 / 20.1 / **100** | 17.6 / 43.9 / **85.9** | 1.29 / 0.84 / **0.32** |
+| Python | 0.387 / 0.102 / **2.6** | 0.387 / 8.2 / **8.2** | 32.6 / 147 / **13.2** |
+| Swift | 5.3 / 20.1 / **139** | 5.1 / 20.9 / **37.7** | 3.90 / 1.08 / **0.63** |
+
+`main` 相对改造前的提速倍数（大于 1 为变快）：
+
+| 操作 | C | Rust | Go | C# | Java | JavaScript | Python | Swift |
+|---|---|---|---|---|---|---|---|---|
+| SM3 1 MiB | **1.6×** | **2.9×** | **2.2×** | **2.2×** | **1.3×** | **4.3×** | **2.0×** | **3.3×** |
+| SM4-CBC 加密 1 MiB | **1.9×** | **6.8×** | **2.2×** | **2.0×** | **3.1×** | **8.2×** | **6.7×** | **26.2×** |
+| SM4-CBC 解密 1 MiB | **4.7×** | **12.4×** | **6.7×** | **4.2×** | **3.5×** | **4.9×** | **21.1×** | **7.3×** |
+| SM4 密钥扩展 | **1.5×** | **1.7×** | **1.6×** | **1.6×** | **1.6×** | **4.1×** | **2.5×** | **6.2×** |
+| SM2 密钥生成 | **8.1×** | **8.6×** | **48.4×** | **42.0×** | **459.0×** | **304.7×** | **4.8×** | **70.6×** |
+| SM2 签名 | **24.2×** | **34.4×** | **96.8×** | **86.1×** | **64.0×** | **228.5×** | **8.4×** | **79.4×** |
+| SM2 验签 | **3.5×** | **3.1×** | **24.1×** | **17.7×** | **21.1×** | **179.1×** | **5.9×** | **23.5×** |
+| SM2 加密 32 B | **3.4×** | **2.8×** | **18.6×** | **12.1×** | **18.8×** | **126.3×** | **2.1×** | **29.7×** |
+| SM2 解密 32 B | **1.4×** | **1.5×** | **11.1×** | **6.7×** | **11.0×** | **79.8×** | **1.3×** | **17.5×** |
+| SM2 密钥交换 | **2.9×** | **2.6×** | **16.6×** | **11.7×** | **63.4×** | **127.9×** | **2.1×** | **35.7×** |
+
+- **高性能版（`main`）：** 所有语言、所有操作、所有数据长度都比改造前快，没有任何一项倒退。SM4 的 1 MiB 加密，Rust、Swift、C、Go 快于 OpenSSL 3.6.5，Java、C#、JavaScript 接近它；1 MiB 解密，Rust、Go、C、C# 快于 OpenSSL，Java 与它持平。
+- **高安全版（`security`）：** SM4 不做依赖秘密数据的查表。Go、C#、Java、Python 在 ARM 上没有可用的硬件指令，只能用布尔电路计算 S 盒，所以 SM4 比改造前慢，加密只有改造前的 26% 到 66%。C 和 Rust 在 ARM 上使用 AES 指令，解密仍然很快。
+- **SM2、SM3（两个分支相同）：** 所有语言都明显变快。Rust、Go、Swift 的签名比 OpenSSL 3.6.5 快 1.4 到 1.7 倍；Java 比 BouncyCastle 快 7.5 倍（签名）到 13 倍（密钥交换）。OpenSSL 不提供 SM2 密钥交换。
+- OpenSSL 3.6.5 在 M2 上的 SM4 也是查表实现：其源码只在 CPU 有 SM4 扩展指令、或者是 Neoverse N1/V1、鲲鹏 920 时才使用汇编。
+
+### x86：与 OpenSSL、BouncyCastle 的对比
+
+在 Intel i5-13500H 的单个性能核上，与 OpenSSL 3.0.13 和 BouncyCastle 1.86 的对比（节选，完整结果和复现方法见 [`compare/`](compare/README.md)）。这组数据测于 SM4 改为查表之前，其中的 SM4 数值对应 `security` 分支：
+
+绿色加粗表示比 OpenSSL 和 BouncyCastle 都快（领先 2% 以上）。
+
+| 操作 | OpenSSL | BouncyCastle | C | Rust | Go | Java |
+|---|---|---|---|---|---|---|
+| SM2 签名（µs） | 202 | 311 | $\color{green}{\textbf{37.6}}$ | $\color{green}{\textbf{27.5}}$ | $\color{green}{\textbf{31.7}}$ | $\color{green}{\textbf{77.1}}$ |
+| SM2 验签（µs） | 192 | 367 | $\color{green}{\textbf{67.2}}$ | $\color{green}{\textbf{64.8}}$ | $\color{green}{\textbf{49.0}}$ | 221 |
+| SM3 1 MiB（MB/s） | 471 | 288 | $\color{green}{\textbf{543}}$ | $\color{green}{\textbf{543}}$ | 440 | 284 |
+| SM4 加密 1 MiB（MB/s） | 157 | 101 | 117 | 123 | 109 | 26.4 |
+| SM4 解密 1 MiB（MB/s） | 177 | 103 | $\color{green}{\textbf{815}}$ | $\color{green}{\textbf{1298}}$ | $\color{green}{\textbf{519}}$ | 24.6 |
+
+`security` 分支的 SM4 加密慢于 OpenSSL，是因为它不使用依赖秘密数据的查表。
+
+## 跨语言Demo
+
+Demo 验证九种语言的 SM2 实现能够完成**密钥交换协议**并使用协商密钥进行 **SM4 加密解密通信**。
+
+### 架构
+
+```
+┌─────────────┐     HTTP      ┌─────────────┐
+│ JS Client   │─────────────>│             │
+├─────────────┤              │             │
+│ Rust Client │─────────────>│   Java      │
+├─────────────┤              │   Server    │
+│Swift Client │─────────────>│   (B侧)     │
+├─────────────┤              │             │
+│ Go Client   │─────────────>│             │
+├─────────────┤              │             │
+│  C Client   │─────────────>│             │
+├─────────────┤              │             │
+│  C# Client  │─────────────>│             │
+├─────────────┤              │             │
+│Python Client│─────────────>│             │
+├─────────────┤              │             │
+│ Dart Client │─────────────>│             │
+└─────────────┘              └─────────────┘
+     (A侧)
+```
+
+### 密钥交换流程
+
+```
+Client(A)                          Server(B)
+   │                                   │
+   │ 生成 dA/pA, ra/Ra                  │
+   │ POST /api/keyswap/init            │
+   ├──────────────────────────────────>│
+   │                                   │ 生成 rb/Rb, 计算 Sb, Kb
+   │        {sessionId, pB, Rb, Sb}    │
+   │<──────────────────────────────────┤
+   │                                   │
+   │ 计算 Sa, Ka, 验证 Sb               │
+   │ POST /api/keyswap/confirm {Sa}    │
+   ├──────────────────────────────────>│
+   │                                   │ 验证 Sa
+   │                       {success}   │
+   │<──────────────────────────────────┤
+   │                                   │
+   │ ========= Ka == Kb 密钥协商完成 =========│
+   │                                   │
+   │ SM4(Ka) 加密消息                    │
+   │ POST /api/crypto/test             │
+   ├──────────────────────────────────>│
+   │                                   │ SM4(Kb) 解密验证 + 加密回复
+   │     {decryptMatch, ciphertext}    │
+   │<──────────────────────────────────┤
+   │ SM4(Ka) 解密回复                    │
+```
+
+### 一键测试
+
+```bash
+cd demo
+./run-tests.sh
+```
+
+## 算法简介
+
+### SM2 椭圆曲线公钥密码算法
+
+基于椭圆曲线点群离散对数难题，256 位安全等级等效于 2048 位 RSA。包含三大核心组件：
+- **SM2-1** 椭圆曲线数字签名算法
+- **SM2-2** 椭圆曲线密钥交换协议
+- **SM2-3** 椭圆曲线公钥加密算法
+
+### SM3 杂凑算法
+
+输出 256 位哈希值，安全性显著高于 MD5 (128 位) 和 SHA-1 (160 位)，适用于数字签名、消息认证码、随机数生成等场景。
+
+### SM4 分组密码算法
+
+密钥长度与分组长度均为 128 位，与 AES 参数一致，是国密体系中对称加密的核心算法。本实现采用 CBC 模式 + PKCS7 填充。
+
+### SM9 标识密码算法
+
+基于 BN 曲线上的 R-ate 双线性对，用户的公钥就是其标识（例如邮箱或手机号），不需要数字证书。密钥生成中心（KGC）用主私钥为每个用户生成私钥。包含：
+- **SM9-2** 数字签名算法
+- **SM9-3** 密钥交换协议
+- **SM9-4** 密钥封装机制和公钥加密算法
+
+## 参考文档
+
+`doc/` 目录包含国家密码管理局发布的算法规范文档：
+
+| 文档 | 说明 |
+|------|------|
+| `sm2.pdf` | SM2 椭圆曲线公钥密码算法规范 |
+| `sm2_param.pdf` | SM2 推荐曲线参数 |
+| `sm3.pdf` | SM3 杂凑算法规范 |
+| `SM4.pdf` | SM4 分组密码算法规范 |
+| `SM9.pdf` | SM9 标识密码算法规范 |
+
+## License
+
+[Apache License 2.0](LICENSE)
