@@ -4,10 +4,12 @@
 // Runs as the last step of `npm test`.
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const { LANGS, PACKS } = await import(join(root, "web/js/i18n/locales.js"));
+// import() needs a file:// URL on Windows too; a bare "D:\..." throws
+// ERR_UNSUPPORTED_ESM_URL_SCHEME.
+const { LANGS, PACKS } = await import(pathToFileURL(join(root, "web/js/i18n/locales.js")).href);
 
 const files = [];
 (function walk(dir) {
