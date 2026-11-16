@@ -91,9 +91,8 @@ Le répertoire `assets/` contient les ressources intégrées, incluses lors du p
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | Avatars de coach intégrés (licence de chaque modèle : voir NOTICE) |
 | `assets/dances/*.json` | 3 danses mocap intégrées |
 | `assets/tts/longhua_v3.1@zh/` `edge@<langue>/` | Packs vocaux hors ligne pour les 10 langues, distribués avec le dépôt ; remplaçables par vos propres enregistrements dans les réglages |
-| `samples/demo-song.mp3` | Morceau d'exemple pour la vérification minimale |
 
-**Procédure de vérification minimale** : `npm install && npm start` → bibliothèque de morceaux → ajouter des fichiers → choisir `samples/demo-song.mp3` → attendre la fin de l'analyse rythmique → lancer la séance depuis l'accueil ; ou aller directement dans « Danse » pour suivre le mocap intégré.
+**Procédure de vérification minimale** : `npm install && npm start` → bibliothèque de morceaux → ajouter des fichiers → choisir un de vos morceaux → attendre la fin de l'analyse rythmique → lancer la séance depuis l'accueil ; ou aller directement dans « Danse » pour suivre le mocap intégré.
 
 **Ressources supplémentaires** :
 - Avatars VRM de coach : téléchargez l'avatar qui vous plaît sur [VRoid Hub](https://hub.vroid.com/) (attention aux conditions de licence de chaque modèle), puis importez-le via « Réglages → Avatar du coach » ;

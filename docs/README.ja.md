@@ -91,9 +91,8 @@ npm start
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | 内蔵コーチアバター（各モデルのライセンスは NOTICE 参照） |
 | `assets/dances/*.json` | 内蔵モーキャプダンス3本 |
 | `assets/tts/longhua_v3.1@zh/` `edge@<言語>/` | オフライン音声パック：全10言語がリポジトリに同梱。設定で自分の録音に差し替え可能 |
-| `samples/demo-song.mp3` | 最小検証用のサンプル楽曲 |
 
-**最小検証フロー**：`npm install && npm start` → 楽曲ライブラリ → ファイル追加 → `samples/demo-song.mp3` を選択 → ビート解析の完了を待つ → ホームでトレーニング開始。または「ダンス」ページで内蔵モーキャプを直接フォロー。
+**最小検証フロー**：`npm install && npm start` → 楽曲ライブラリ → ファイル追加 → 手持ちの曲 を選択 → ビート解析の完了を待つ → ホームでトレーニング開始。または「ダンス」ページで内蔵モーキャプを直接フォロー。
 
 **追加リソース**：
 - VRMコーチアバター：[VRoid Hub](https://hub.vroid.com/) で好きなアバターをダウンロードし（各モデルのライセンス条項に注意）、「設定 → コーチアバター」からインポート；

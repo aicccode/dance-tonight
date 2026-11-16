@@ -84,11 +84,10 @@ npm start
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | 内置教练形象（各自许可见 NOTICE） |
 | `assets/dances/*.json` | 3 段内置动捕舞蹈 |
 | `assets/tts/longhua_v3.1@zh/` `edge@<语言>/` | 10 种语言的离线语音包 |
-| `samples/demo-song.mp3` | 示例歌曲 |
 
 私人资源不入库：自己的 VRM 在「设置 → 教练形象」导入（从 VRoid Hub 下载时注意模型授权），歌曲随手导入，两者都只存在本机数据目录。
 
-**最小验证**：`npm install && npm start` → 曲库 → 添加文件 → 选 `samples/demo-song.mp3` → 等节拍分析完成 → 首页开始训练；或直接在「舞蹈」页跟练内置动捕。
+**最小验证**：`npm install && npm start` → 曲库 → 添加文件 → 选你自己的音乐文件 → 等节拍分析完成 → 首页开始训练；或直接在「舞蹈」页跟练内置动捕。
 
 ## 跨设备数据迁移
 

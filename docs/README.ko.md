@@ -91,9 +91,8 @@ npm start
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | 내장 코치 아바타(각 모델 라이선스는 NOTICE 참조) |
 | `assets/dances/*.json` | 내장 모캡 댄스 3개 |
 | `assets/tts/longhua_v3.1@zh/` `edge@<언어>/` | 오프라인 음성 패키지: 10개 언어 모두 저장소에 포함되어 배포되며, 설정에서 직접 녹음으로 교체 가능 |
-| `samples/demo-song.mp3` | 최소 검증용 샘플 곡 |
 
-**최소 검증 절차**: `npm install && npm start` → 곡 라이브러리 → 파일 추가 → `samples/demo-song.mp3` 선택 → 비트 분석 완료 대기 → 홈에서 훈련 시작. 또는 「댄스」 페이지에서 내장 모캡을 바로 따라 하기.
+**최소 검증 절차**: `npm install && npm start` → 곡 라이브러리 → 파일 추가 → 직접 가진 곡 선택 → 비트 분석 완료 대기 → 홈에서 훈련 시작. 또는 「댄스」 페이지에서 내장 모캡을 바로 따라 하기.
 
 **추가 리소스**:
 - VRM 코치 아바타: [VRoid Hub](https://hub.vroid.com/)에서 마음에 드는 아바타를 내려받고(각 모델의 라이선스 조항에 유의) 「설정 → 코치 아바타」에서 가져오기;

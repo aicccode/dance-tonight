@@ -91,9 +91,8 @@ O diretório `assets/` guarda os recursos embutidos, que acompanham o pacote na 
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | avatares de treinadora embutidos (licença de cada modelo ver NOTICE) |
 | `assets/dances/*.json` | 3 danças de motion capture embutidas |
 | `assets/tts/longhua_v3.1@zh/` `edge@<idioma>/` | pacotes de voz offline para os 10 idiomas, distribuídos com o repositório; podem ser substituídos pelas suas próprias gravações nas Configurações |
-| `samples/demo-song.mp3` | música de exemplo para a verificação mínima |
 
-**Fluxo de verificação mínima**: `npm install && npm start` → biblioteca de músicas → adicionar arquivo → escolher `samples/demo-song.mp3` → aguardar a análise de batidas → iniciar o treino na página inicial; ou vá direto à página "Dança" e acompanhe as danças de motion capture embutidas.
+**Fluxo de verificação mínima**: `npm install && npm start` → biblioteca de músicas → adicionar arquivo → escolher uma música sua → aguardar a análise de batidas → iniciar o treino na página inicial; ou vá direto à página "Dança" e acompanhe as danças de motion capture embutidas.
 
 **Mais recursos**:
 - Avatares VRM: baixe no [VRoid Hub](https://hub.vroid.com/) o avatar que quiser (atenção aos termos de licença de cada modelo) e importe em "Configurações → Avatar da treinadora";
