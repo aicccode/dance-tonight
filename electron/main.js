@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { BrowserWindow, app, dialog, ipcMain, protocol, session, shell, systemPreferences } from "electron";
 
 import { Avatars } from "./avatars.js";
+import { seedBundledSongs as seedBundled } from "./bundled.js";
 import { Dances, MAX_CLIP_BYTES } from "./dances.js";
 import { DataExporter, CATEGORIES, EXPORT_VERSION } from "./export.js";
 import { MusicLibrary } from "./music.js";
@@ -121,6 +122,13 @@ async function addSongFiles(paths) {
   }
   return added;
 }
+
+/**
+ * Copy the tracks that ship with the app into the user's library, once.
+ * They exist so the first launch is usable with no network at all — the online
+ * search needs Openverse, which is unreachable from some networks.
+ */
+const seedBundledSongs = () => seedBundled({ store, music, assets: ASSETS, keyOf: fileKey });
 
 function walk(dir, depth = 0, out = []) {
   if (depth > 4) return out;
@@ -368,6 +376,8 @@ app.whenReady().then(async () => {
   session.defaultSession.setPermissionCheckHandler((_wc, perm, origin) => allowed.has(perm) && String(origin).startsWith("app://bundle"));
   if (process.platform === "darwin") await systemPreferences.askForMediaAccess("camera").catch(() => false);
 
+  // before the window so the first render of the library already has them
+  await seedBundledSongs().catch((err) => console.warn("bundled tracks failed", err));
   await createWindow();
   // songs added before the library copied files: copy them in the background
   music.migrate(store).then((r) => {

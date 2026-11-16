@@ -93,8 +93,9 @@ Im Verzeichnis `assets/` liegen die eingebauten Ressourcen, sie werden beim Pack
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | Eingebaute Coach-Avatare (Lizenz je Modell siehe NOTICE) |
 | `assets/dances/*.json` | 3 eingebaute Motion-Capture-Tänze |
 | `assets/tts/longhua_v3.1@zh/` `edge@<Sprache>/` | Offline-Sprachpakete für alle 10 Sprachen, werden mit dem Repository ausgeliefert; in den Einstellungen durch eigene Aufnahmen ersetzbar |
+| `assets/music/*.mp3` | Zwei mitgelieferte Titel (CC BY 3.0, Credits in `assets/music/CREDITS.md`), beim ersten Start in die Bibliothek kopiert und analysiert — die App bleibt offline nutzbar, weil die Online-Suche Openverse braucht und manche Netze es nicht erreichen |
 
-**Ablauf der minimalen Verifizierung**: `npm install && npm start` → Songbibliothek → Datei hinzufügen → einen eigenen Song wählen → auf Abschluss der Beat-Analyse warten → auf der Startseite das Training starten; oder direkt auf der „Tanz“-Seite den eingebauten Motion-Capture-Tänzen nachmachen.
+**Ablauf der minimalen Verifizierung**: `npm install && npm start` → Songbibliothek → die zwei mitgelieferten Titel sind schon analysiert; eigene über „Datei hinzufügen“ → auf der Startseite das Training starten; oder direkt auf der „Tanz“-Seite den eingebauten Motion-Capture-Tänzen nachmachen.
 
 **Weitere Ressourcen**:
 - VRM-Coach-Avatare: Auf [VRoid Hub](https://hub.vroid.com/) einen gewünschten Avatar herunterladen (auf die Lizenzbedingungen jedes Modells achten), dann unter „Einstellungen → Coach-Avatar“ importieren;

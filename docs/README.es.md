@@ -93,8 +93,9 @@ El directorio `assets/` contiene los recursos integrados y se incluye en el empa
 | `assets/avatars/RealMaster.vrm` `SportGirl.vrm` | Avatares de entrenador integrados (licencia de cada modelo, ver NOTICE) |
 | `assets/dances/*.json` | 3 bailes de mocap integrados |
 | `assets/tts/longhua_v3.1@zh/` `edge@<idioma>/` | Paquetes de voz sin conexión para los 10 idiomas, distribuidos con el repositorio; reemplazables con tus propias grabaciones en Ajustes |
+| `assets/music/*.mp3` | Dos pistas incluidas (CC BY 3.0, créditos en `assets/music/CREDITS.md`), copiadas a la biblioteca y analizadas al primer arranque: la app se puede usar sin conexión, porque la búsqueda en línea depende de Openverse y hay redes que no lo alcanzan |
 
-**Flujo de verificación mínima**: `npm install && npm start` → Biblioteca de canciones → Añadir archivos → elige una canción tuya → espera a que termine el análisis de ritmo → empieza el entrenamiento desde la página principal; o ve a la página "Baile" y sigue directamente un baile de mocap integrado.
+**Flujo de verificación mínima**: `npm install && npm start` → Biblioteca de canciones → las dos pistas incluidas ya están analizadas, o usa «Añadir archivos» para las tuyas → empieza el entrenamiento desde la página principal; o ve a la página "Baile" y sigue directamente un baile de mocap integrado.
 
 **Más recursos**:
 - Avatares VRM de entrenador: descarga un personaje que te guste de [VRoid Hub](https://hub.vroid.com/) (atento a los términos de licencia de cada modelo) e impórtalo en "Ajustes → Avatar del entrenador";

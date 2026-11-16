@@ -21,6 +21,9 @@ assets/tts/*
 # bundled offline cue packs: zh (CosyVoice) + nine languages (Edge neural)
 !assets/tts/edge@*/
 !assets/tts/longhua_v3.1@zh/
+# two CC BY demo tracks so a fresh install is playable offline (see CREDITS.md)
+!assets/music/
+!assets/music/*
 # personal copies of avatars in the project root
 /*.vrm
 __pycache__/

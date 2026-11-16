@@ -36,7 +36,14 @@ This product includes software and assets from third parties:
    https://www.mixamo.com/ (the app links to it) and imported as
    FBX / BVH / VRMA.
 
-7. Bundled non-Chinese voice packs (assets/tts/edge@*/)
+7. Bundled demo music (assets/music/, full credits in assets/music/CREDITS.md)
+   - lets-dance.mp3 — "Let's Dance, This Is the End" by Andrey Avkhimovich,
+     CC BY 3.0, https://www.jamendo.com/track/1299684
+   - think-about-you.mp3 — "Think About You" by Square a Saw, CC BY 3.0,
+     https://www.jamendo.com/track/1761753
+   - Files are unmodified; the attribution above must stay with them.
+
+8. Bundled non-Chinese voice packs (assets/tts/edge@*/)
    - Generated with Microsoft Edge TTS neural voices (one voice per
      language: en/es/ru/ja/ko/fr/de/pt/ar) via scripts/gen_voices_edge.py
    - Edge TTS is an unofficial free endpoint; if you redistribute this
