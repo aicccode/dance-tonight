@@ -414,7 +414,10 @@ export class CoachPanel {
     this.credit = root.querySelector(".coach-credit");
     this.coach = new Coach(this.canvas);
     this.#restore();
-    this.#drag(root.querySelector(".coach-head"));
+    // the panel has no title bar: dragging works anywhere on it, and the only
+    // permanent affordance is the corner grip
+    this.#drag();
+    this.#resize(root.querySelector(".coach-grip"));
     new ResizeObserver(() => {
       this.coach.resize();
       this.#save();
@@ -467,25 +470,52 @@ export class CoachPanel {
     if (!this.docked) this.#restore();
   }
 
-  #drag(handle) {
-    handle.addEventListener("pointerdown", (e) => {
-      if (e.target.closest("button") || this.docked) return;
+  /** Move the floating panel: press anywhere on it except the buttons and the grip. */
+  #drag() {
+    this.root.addEventListener("pointerdown", (e) => {
+      if (this.docked || e.button !== 0) return;
+      if (e.target.closest("button, .coach-grip")) return;
       const b = this.root.getBoundingClientRect();
       const dx = e.clientX - b.left, dy = e.clientY - b.top;
-      handle.setPointerCapture(e.pointerId);
+      this.root.setPointerCapture(e.pointerId);
       const move = (ev) => {
         this.root.style.left = `${Math.min(Math.max(0, ev.clientX - dx), innerWidth - b.width)}px`;
         this.root.style.top = `${Math.min(Math.max(0, ev.clientY - dy), innerHeight - 40)}px`;
       };
       const up = () => {
-        handle.removeEventListener("pointermove", move);
-        handle.removeEventListener("pointerup", up);
-        handle.removeEventListener("pointercancel", up);
+        this.root.removeEventListener("pointermove", move);
+        this.root.removeEventListener("pointerup", up);
+        this.root.removeEventListener("pointercancel", up);
         this.#save();
       };
-      handle.addEventListener("pointermove", move);
-      handle.addEventListener("pointerup", up);
-      handle.addEventListener("pointercancel", up);
+      this.root.addEventListener("pointermove", move);
+      this.root.addEventListener("pointerup", up);
+      this.root.addEventListener("pointercancel", up);
+    });
+  }
+
+  /** Resize from the corner grip (the native CSS resize handle draws a box, so it is off). */
+  #resize(grip) {
+    grip.addEventListener("pointerdown", (e) => {
+      if (this.docked || e.button !== 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const b = this.root.getBoundingClientRect();
+      const sx = e.clientX, sy = e.clientY, w0 = b.width, h0 = b.height;
+      grip.setPointerCapture(e.pointerId);
+      const move = (ev) => {
+        this.root.style.width = `${Math.round(Math.min(Math.max(160, w0 + ev.clientX - sx), innerWidth - b.left))}px`;
+        this.root.style.height = `${Math.round(Math.min(Math.max(220, h0 + ev.clientY - sy), innerHeight - b.top))}px`;
+      };
+      const up = () => {
+        grip.removeEventListener("pointermove", move);
+        grip.removeEventListener("pointerup", up);
+        grip.removeEventListener("pointercancel", up);
+        this.#save();
+      };
+      grip.addEventListener("pointermove", move);
+      grip.addEventListener("pointerup", up);
+      grip.addEventListener("pointercancel", up);
     });
   }
 

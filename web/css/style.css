@@ -335,14 +335,27 @@ table.dense { width: 100%; border-collapse: collapse; }
 }
 
 /* ---------- coach panel ---------- */
-.coach-panel { position: fixed; z-index: var(--z-coach); display: flex; flex-direction: column; background: rgba(12, 14, 32, .6); border: 1px solid rgba(244, 196, 48, .35); border-radius: var(--r-lg); overflow: hidden; resize: both; min-width: 160px; min-height: 220px; backdrop-filter: blur(6px); box-shadow: var(--shadow); }
-.coach-head { display: flex; gap: 8px; align-items: center; padding: 4px 10px; cursor: move; user-select: none; font-size: 12px; background: rgba(0, 0, 0, .35); }
-.coach-head .coach-credit { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; }
-.coach-head button { padding: 0 8px; background: none; border: none; font-size: 18px; line-height: 1.2; }
-.coach-panel canvas { flex: 1; width: 100%; min-height: 0; display: block; }
-.coach-panel.docked { position: absolute; inset: 0; width: auto !important; height: auto !important; left: 0 !important; top: 0 !important; resize: none; border: none; border-radius: 0; background: transparent; backdrop-filter: none; box-shadow: none; min-width: 0; min-height: 0; z-index: auto; }
-.coach-panel.docked .coach-head { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, rgba(0, 0, 0, .55)); cursor: default; padding: 14px 10px 6px; }
+/* Floating over the game: no frame at all, so the beat markers behind it stay
+   readable. The only permanent chrome is the corner grip; the caption bar
+   fades in on hover (and is the drag surface together with the coach itself). */
+.coach-panel { position: fixed; z-index: var(--z-coach); display: flex; flex-direction: column; background: none; border: none; border-radius: var(--r-lg); overflow: hidden; min-width: 160px; min-height: 220px; box-shadow: none; backdrop-filter: none; cursor: move; }
+.coach-head { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center; padding: 3px 8px; cursor: move; user-select: none; font-size: 12px; color: #e8e9f5; background: linear-gradient(rgba(6, 8, 20, .62), rgba(6, 8, 20, 0)); opacity: 0; transition: opacity .16s ease; }
+.coach-panel:hover .coach-head, .coach-panel:focus-within .coach-head { opacity: 1; }
+.coach-head .coach-credit { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; text-shadow: 0 1px 3px #000; }
+.coach-head button { padding: 0 8px; background: none; border: none; font-size: 18px; line-height: 1.2; color: inherit; text-shadow: 0 1px 3px #000; }
+.coach-panel canvas { flex: 1; width: 100%; min-height: 0; display: block; cursor: inherit; }
+/* on hover only: a hairline ring, so the drag/resize area is findable without
+   painting over the game */
+.coach-panel:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14); }
+/* the one always-visible affordance: a small corner grip for resizing */
+.coach-grip { position: absolute; right: 0; bottom: 0; z-index: 2; width: 20px; height: 20px; cursor: nwse-resize; touch-action: none; opacity: .5; transition: opacity .16s ease; }
+.coach-grip::before { content: ""; position: absolute; right: 4px; bottom: 4px; width: 9px; height: 9px; border-right: 2px solid rgba(255, 255, 255, .85); border-bottom: 2px solid rgba(255, 255, 255, .85); border-radius: 0 0 3px 0; filter: drop-shadow(0 0 2px rgba(0, 0, 0, .9)); }
+.coach-panel:hover .coach-grip, .coach-grip:hover { opacity: 1; }
+.coach-panel.docked { position: absolute; inset: 0; width: auto !important; height: auto !important; left: 0 !important; top: 0 !important; cursor: default; border: none; border-radius: 0; background: transparent; backdrop-filter: none; box-shadow: none; min-width: 0; min-height: 0; z-index: auto; }
+.coach-panel.docked .coach-head { top: auto; bottom: 0; opacity: 1; background: linear-gradient(transparent, rgba(0, 0, 0, .55)); cursor: default; padding: 14px 10px 6px; }
 .coach-panel.docked .coach-head > span:first-child, .coach-panel.docked .coach-hide { display: none; }
+.coach-panel.docked .coach-grip { display: none; }
+.coach-panel.docked:hover { box-shadow: none; }
 
 /* ---------- game ---------- */
 .game { position: fixed; inset: 0; background: #000; z-index: var(--z-game); }
