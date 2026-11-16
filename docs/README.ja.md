@@ -1,6 +1,6 @@
 # Dance Tonight · 100日間腹筋燃焼プラン（デスクトップ版）
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 音楽に合わせて体を動かすフィットネスゲームであり、3Dダンス練習ツールでもあります。フィットネス動作はカメラでフォームの出来栄えを判定し、正確度とリズムでスコア化。複雑なダンスは、インストラクターを見てステップを覚え、振り付けを最後まで踊るスタイルです。画面上のVRMコーチが連続でお手本を見せ、音声が次の動きを事前に知らせます。
 
@@ -106,7 +106,7 @@ npm start
 
 ## オープンソースライセンス
 
-Apache License 2.0（[LICENSE](LICENSE) 参照）。サードパーティのモデルとリソースのライセンスは [NOTICE](NOTICE) に項目ごとに記載——特に `assets/avatars/` 内のVRMモデルそれぞれのライセンス条項には注意し、公開配布や商用利用の前に確認してください。
+Apache License 2.0（[LICENSE](../LICENSE) 参照）。サードパーティのモデルとリソースのライセンスは [NOTICE](../NOTICE) に項目ごとに記載——特に `assets/avatars/` 内のVRMモデルそれぞれのライセンス条項には注意し、公開配布や商用利用の前に確認してください。
 
 ## パッケージング
 

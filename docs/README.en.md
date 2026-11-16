@@ -1,6 +1,6 @@
 # Dance Tonight · 100-Day Abs & Fat-Burn Plan (Desktop)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 A fitness game set to music, and also a 3D dance-along training tool. Fitness moves are judged by camera for how well you hit each position, scored on accuracy and rhythm; complex dances focus on watching the coach, learning the steps, and following the full choreography. The VRM coach on screen demonstrates continuously, with voice cues announcing the next move in advance.
 
@@ -106,7 +106,7 @@ The app never goes online and requires no account; all data stays local. To move
 
 ## License
 
-Apache License 2.0 (see [LICENSE](LICENSE)). Licenses for third-party models and assets are itemized in [NOTICE](NOTICE) — pay particular attention to the individual license terms of the VRM models in `assets/avatars/`, and confirm before public distribution or commercial use.
+Apache License 2.0 (see [LICENSE](../LICENSE)). Licenses for third-party models and assets are itemized in [NOTICE](../NOTICE) — pay particular attention to the individual license terms of the VRM models in `assets/avatars/`, and confirm before public distribution or commercial use.
 
 ## Packaging
 

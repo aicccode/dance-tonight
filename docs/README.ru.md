@@ -1,6 +1,6 @@
 # Dance Tonight · 100-дневный план на пресс и жиросжигание (десктоп)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 Фитнес-игра под музыку и одновременно инструмент 3D-тренировок с танцами. Фитнес-упражнения камера оценивает по тому, насколько точно вы выполняете позицию, выставляя баллы за точность и ритм; сложные танцы построены на слежении за тренером, разучивании шагов и прохождении полной хореографии. VRM-тренер на экране показывает движения непрерывно, а голос заранее подсказывает следующее упражнение.
 
@@ -106,7 +106,7 @@ npm start
 
 ## Лицензия
 
-Apache License 2.0 (см. [LICENSE](LICENSE)). Лицензии сторонних моделей и ресурсов перечислены по пунктам в [NOTICE](NOTICE) — особенно обратите внимание на лицензионные условия каждого VRM-моделя в `assets/avatars/` и уточните их перед публичным распространением или коммерческим использованием.
+Apache License 2.0 (см. [LICENSE](../LICENSE)). Лицензии сторонних моделей и ресурсов перечислены по пунктам в [NOTICE](../NOTICE) — особенно обратите внимание на лицензионные условия каждого VRM-моделя в `assets/avatars/` и уточните их перед публичным распространением или коммерческим использованием.
 
 ## Сборка пакетов
 

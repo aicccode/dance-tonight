@@ -1,6 +1,6 @@
 # Dance Tonight · Plan de 100 días de abdomen y quema de grasa (Escritorio)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 Un juego de fitness al ritmo de la música y, a la vez, una herramienta de entrenamiento de baile en 3D. Los ejercicios de fitness se evalúan con la cámara según qué tan bien alcanzas cada posición, puntuando precisión y ritmo; los bailes complejos se centran en observar al entrenador, aprender los pasos y seguir la coreografía completa. El entrenador VRM en pantalla demuestra de forma continua y la voz te anticipa el siguiente movimiento.
 
@@ -106,7 +106,7 @@ La app no se conecta a internet ni requiere registro; todos los datos se guardan
 
 ## Licencia
 
-Apache License 2.0 (ver [LICENSE](LICENSE)). Las licencias de los modelos y recursos de terceros se detallan una a una en [NOTICE](NOTICE) — presta especial atención a los términos de licencia individuales de los modelos VRM en `assets/avatars/` y verifícalos antes de distribuir públicamente o usar comercialmente.
+Apache License 2.0 (ver [LICENSE](../LICENSE)). Las licencias de los modelos y recursos de terceros se detallan una a una en [NOTICE](../NOTICE) — presta especial atención a los términos de licencia individuales de los modelos VRM en `assets/avatars/` y verifícalos antes de distribuir públicamente o usar comercialmente.
 
 ## Empaquetado
 

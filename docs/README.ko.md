@@ -1,6 +1,6 @@
 # Dance Tonight · 100일 복근 지방 연소 플랜(데스크톱 버전)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 음악에 맞춰 움직이는 피트니스 게임이자 3D 댄스 따라하기 도구입니다. 피트니스 동작은 카메라로 자세의 완성도를 판단해 정확도와 리듬으로 점수를 매기고, 복잡한 댄스는 강사를 보고 스텝을 익히며 안무를 끝까지 따라추는 방식입니다. 화면의 VRM 코치가 연속으로 시범을 보여 주고, 음성이 다음 동작을 미리 알려 줍니다.
 
@@ -106,7 +106,7 @@ npm start
 
 ## 오픈소스 라이선스
 
-Apache License 2.0([LICENSE](LICENSE) 참조). 서드파티 모델과 리소스의 라이선스는 [NOTICE](NOTICE)에 항목별로 안내되어 있습니다——특히 `assets/avatars/` 안의 VRM 모델 각각의 라이선스 조항에 유의하여, 공개 배포나 상업 이용 전에 확인하세요.
+Apache License 2.0([LICENSE](../LICENSE) 참조). 서드파티 모델과 리소스의 라이선스는 [NOTICE](../NOTICE)에 항목별로 안내되어 있습니다——특히 `assets/avatars/` 안의 VRM 모델 각각의 라이선스 조항에 유의하여, 공개 배포나 상업 이용 전에 확인하세요.
 
 ## 패키징
 

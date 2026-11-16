@@ -1,6 +1,6 @@
 # Dance Tonight · 100-Tage-Bauchmuskel-Fettverbrennungsplan (Desktop)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 Ein Fitness-Spiel, bei dem man sich zur Musik bewegt, und zugleich ein 3D-Tanz-Lernwerkzeug. Fitnessübungen werden per Kamera daraufhin bewertet, wie sauber sie ausgeführt werden, und nach Genauigkeit und Rhythmus benotet; bei komplexen Tänzen steht das Abschauen vom Coach, das Lernen der Schritte und das Durchlaufen der Choreografie im Vordergrund. Der VRM-Coach auf dem Bildschirm zeigt die Bewegungen fortlaufend vor und kündigt per Sprachausgabe die nächste Übung an.
 
@@ -106,7 +106,7 @@ Die App geht nicht ins Netz und verlangt keine Registrierung, alle Daten liegen 
 
 ## Open-Source-Lizenz
 
-Apache License 2.0 (siehe [LICENSE](LICENSE)). Die Lizenzen von Drittmodellen und -ressourcen sind in [NOTICE](NOTICE) einzeln aufgelistet – besonders auf die Lizenzbedingungen der einzelnen VRM-Modelle unter `assets/avatars/` achten und vor öffentlicher Weitergabe oder kommerzieller Nutzung bestätigen.
+Apache License 2.0 (siehe [LICENSE](../LICENSE)). Die Lizenzen von Drittmodellen und -ressourcen sind in [NOTICE](../NOTICE) einzeln aufgelistet – besonders auf die Lizenzbedingungen der einzelnen VRM-Modelle unter `assets/avatars/` achten und vor öffentlicher Weitergabe oder kommerzieller Nutzung bestätigen.
 
 ## Packaging
 

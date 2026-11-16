@@ -1,6 +1,6 @@
 # Dance Tonight · Programme abdos brûle-graisses 100 jours (version desktop)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 Un jeu de fitness où l'on bouge en musique, mais aussi un outil d'apprentissage de danse 3D. Les mouvements de fitness sont évalués par la caméra selon la qualité d'exécution et notés sur la précision et le rythme ; pour les danses complexes, l'essentiel est de regarder le coach, d'apprendre les pas et de suivre la chorégraphie jusqu'au bout. Le coach VRM à l'écran enchaîne les démonstrations et la voix annonce à l'avance le mouvement suivant.
 
@@ -106,7 +106,7 @@ L'application ne se connecte pas à Internet et ne demande aucune inscription ; 
 
 ## Licence open source
 
-Apache License 2.0 (voir [LICENSE](LICENSE)). Les licences des modèles et ressources tiers sont détaillées élément par élément dans [NOTICE](NOTICE) — prêtez particulièrement attention aux conditions de licence de chaque modèle VRM dans `assets/avatars/` avant toute diffusion publique ou usage commercial.
+Apache License 2.0 (voir [LICENSE](../LICENSE)). Les licences des modèles et ressources tiers sont détaillées élément par élément dans [NOTICE](../NOTICE) — prêtez particulièrement attention aux conditions de licence de chaque modèle VRM dans `assets/avatars/` avant toute diffusion publique ou usage commercial.
 
 ## Packaging
 

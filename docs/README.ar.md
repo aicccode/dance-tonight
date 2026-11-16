@@ -1,6 +1,6 @@
 # Dance Tonight · خطة 100 يوم لعضلات البطن وحرق الدهون (نسخة سطح المكتب)
 
-[![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
+[![CI](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml/badge.svg)](https://github.com/aicccode/dance-tonight/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/aicccode/dance-tonight?sort=semver)](https://github.com/aicccode/dance-tonight/releases/latest) [![License](https://img.shields.io/github/license/aicccode/dance-tonight)](https://github.com/aicccode/dance-tonight/blob/main/LICENSE) [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4a5568)](https://github.com/aicccode/dance-tonight/releases/latest)
 
 لعبة لياقة تتحرك معها على إيقاع الموسيقى، وهي كذلك أداة لتعلم الرقص ثلاثي الأبعاد. تقيّم الكاميرا مدى صحة أداء حركات اللياقة وتمنح درجات حسب الدقة والإيقاع؛ أما الرقصات المعقدة فتقوم أساسًا على مراقبة المدربة، وتعلّم الخطوات، ومتابعة الرقصة حتى نهايتها. تعرض المدربة الافتراضية بصيغة VRM الحركات على الشاشة باستمرار، ويعلن الصوت المسموع الحركة التالية مسبقًا.
 
@@ -106,7 +106,7 @@ npm start
 
 ## رخصة المصدر المفتوح
 
-Apache License 2.0 (انظر [LICENSE](LICENSE)). ورخص النماذج والموارد الخارجية مشروحة بندًا بندًا في [NOTICE](NOTICE) — وانتبه خصوصًا لشروط رخصة كل نموذج VRM في `assets/avatars/`، وتأكد قبل التوزيع العلني أو الاستخدام التجاري.
+Apache License 2.0 (انظر [LICENSE](../LICENSE)). ورخص النماذج والموارد الخارجية مشروحة بندًا بندًا في [NOTICE](../NOTICE) — وانتبه خصوصًا لشروط رخصة كل نموذج VRM في `assets/avatars/`، وتأكد قبل التوزيع العلني أو الاستخدام التجاري.
 
 ## البناء والتغليف
 

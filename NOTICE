@@ -21,6 +21,8 @@ This product includes software and assets from third parties:
      repository or use it commercially, verify the original model license
      first, or remove this file. VRM avatars for personal use can be
      downloaded from https://hub.vroid.com/
+   - 1.vrm, 2.vrm, 3.vrm — provenance not recorded at import time; treat
+     them the same way as RealMaster.vrm before redistributing.
 
 4. MediaPipe pose_landmarker_lite.task (pose detection)
    - File: assets/models/pose_landmarker_lite.task (copied into web/vendor at
@@ -41,12 +43,12 @@ This product includes software and assets from third parties:
 7. samples/demo-song.mp3 — demo track for the minimal verification flow.
    Replace it with your own music; end users import their own songs.
 
-All other code in this repository is released under the Apache License 2.0.
-
-7. Bundled non-Chinese voice packs (assets/tts/edge@*/)
+8. Bundled non-Chinese voice packs (assets/tts/edge@*/)
    - Generated with Microsoft Edge TTS neural voices (one voice per
      language: en/es/ru/ja/ko/fr/de/pt/ar) via scripts/gen_voices_edge.py
    - Edge TTS is an unofficial free endpoint; if you redistribute this
      repository, review whether this usage is acceptable for you, or
      delete those directories and let the app fall back to the browser's
      speech synthesis for those languages
+
+All other code in this repository is released under the Apache License 2.0.
